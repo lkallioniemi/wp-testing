@@ -112,6 +112,11 @@ define("WP_CACHE", getenv("WP_CACHE") == "true");
  */
 define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
 
+define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/wordpress');
+
+define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
+define( 'WP_CONTENT_URL', ( $_SERVER['SERVER_PORT'] = '443' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] .'/wp-content' );
+
 /* That"s all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
