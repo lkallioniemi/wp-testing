@@ -5,24 +5,15 @@ server {
   # Some basic cache-control for static files to be sent to the browser
   location ~ \.(html|htm|rtf|rtx|svg|svgz|txt|xsd|xsl|xml)$ {
     try_files       $uri =404;
-    expires 86000s;
-    add_header Pragma "public";
-    add_header Cache-Control "max-age=86000, public, must-revalidate, proxy-revalidate";
   }
 
   location ~ \.(css|js|htc)$ {
     try_files       $uri =404;
-    expires         max;
-    add_header      Pragma "public";
-    add_header      Cache-Control "max-age=31536000, public, must-revalidate, proxy-revalidate";
     access_log      off;
   }
 
   location ~ \.(asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$ {
     try_files       $uri =404;
-    expires         max;
-    add_header      Pragma "public";
-    add_header      Cache-Control "max-age=31536000, public, must-revalidate, proxy-revalidate";
     access_log      off;
   }
 
