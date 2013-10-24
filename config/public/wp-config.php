@@ -53,7 +53,7 @@ if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
   $_SERVER["HTTPS"] = "on";
 
 /** The Database Collate type. Don't change this if in doubt. */
-define("DB_COLLATE", "");
+define("DB_COLLATE", "utf8_swedish_ci");
 
 /**#@+
  * Authentication Unique Keys and Salts.
