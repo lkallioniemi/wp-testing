@@ -1,0 +1,212 @@
+PREREQUISITES
+
+    Use brew install to install at least following modules:
+        php55 php55-memcache memcached mysql
+        # start memcached and mysql as instructed
+
+    Define your environment variables. For example, put this to file ".env"
+    (git ignored) and run "export `cat .env`" in every terminal used to run
+    the server:
+
+        CLEARDB_DATABASE_URL=mysql://root:@localhost/DATABASENAME
+        WP_CACHE=true
+        MEMCACHIER_SERVERS=localhost:11211
+
+    NOTE: You do not need to do this if you use start.sh at the root of
+    the repository to start the server.
+
+SEARCHREPLACEDB2
+
+    In project repository root is searchreplacedb2.php tool for doing
+    search and replace to database content. This is used to rewrite URLs
+    stored in the database, possibly in PHP serialized format. Start
+    the server with command:
+
+        php -S localhost:5999 -t .
+
+    This tool has nothing application specific: it's just a database
+    connecting sofware written in PHP. You can leave it running etc.
+
+NORMAL DEVELOPMENT CYCLE
+
+    Prepare development clone and database
+        git clone git@github.com:frc/REPOSITORYNAME.git
+        cd REPOSITORYNAME
+        curl http://wordpress.org/latest.tar.gz | tar xz -C config/public
+        git remote add heroku git@heroku.com:HEROKUSTAGINGAPPNAME.git
+        heroku config   # see CLEARDB_DATABASE_URL
+        mysqladmin -uroot create DATABASENAME
+        mysqldump -uxxx -pxxx -hxxx xxx | mysql -uroot DATABASENAME
+        open http://localhost:5999/searchreplacedb2.php
+        ## specify local database connection info (user root, no password)
+        ## replace HEROKUSTAGINGAPPNAME.herokuapp.com with localhost:5001
+        ctrl-c to stop the server after done
+
+    Start the server and do development
+        Use
+            ./start.sh to start server at localhost:5001
+            ./start.sh YOURHOSTNAME:5003 to use your own
+            php -S localhost:5001 -t config/public to skip start.sh entirelly.
+
+        open http://localhost:5001/
+        ## Please note that all envs (local, staging and production) share
+        ## the wp uploads, that are hosted at BUCKETNAME.s3.amazonaws.com/BUCKETPATH
+        ## Then, after changes..
+        git commit -am 'my commit message'
+        git push
+
+    Synchronize staging database to the production database (optional)
+        heroku config:get CLEARDB_DATABASE_URL --app HEROKUPRODUCTIONAPPNAME # xxx
+        heroku config:get CLEARDB_DATABASE_URL --app HEROKUSTAGINGAPPNAME    # yyy
+        mysqldump -uxxx -pxxx -hxxx xxx | mysql -uyyy -pyyy -hyyy yyy
+        open http://localhost:5999/searchreplacedb2.php
+        ## specify the STAGING database connection info
+        ## replace HEROKUPRODICTIONAPPURL with HEROKUSTAGINGAPPURL
+
+    Push to heroku (staging)
+        git push heroku master
+        open HEROKUSTAGINGAPPURL
+        ## check that everything works, also at wp-admin
+
+    Push to heroku (production)
+       git push git@heroku.com:HEROKUPRODUCTIONAPPNAME.git master
+        open HEROKUPRODUCTIONAPPURL
+        ## check that everything works, also at wp-admin
+
+    If you need to push database changes from local (or staging) to production,
+    remember to sync you data first, do searchreplacedb2, and be careful
+    not to overwrite live data. Use the maintenance mode, for example:
+        heroku maintenance:on --app HEROKUPRODUCTIONAPPNAME
+
+    To access the S3 bucket, you need the aws key, secret and bucket name.
+        mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
+
+INITIAL IMPORT FROM LEGACY INSTALLATION
+
+    Dump the database (at the server)
+        mysqldump -uxxx -pyyy zzz >~/zzz.sql
+
+    Import to localhost
+        scp HOSTNAME:zzz.sql ~
+        mysql -uroot DATABASENAME <~/zzz.sql
+
+    Install WP
+        curl http://wordpress.org/latest.tar.gz | tar xz -C config/public
+
+    Migrata database URLs
+        open http://localhost:5999/searchreplacedb2.php
+        ## specify local database connection info
+        ## replace LEGACYAPPURL with localhost:5001
+
+    Copy the media assets
+        scp -r HOSTNAME:/PATHTOWPISNTALLATION/wp-content/uploads config/public/wp-content/
+
+    Start the server
+        php -S localhost:5001 -t config/public
+
+    Access WP-admin and check that everything is ok
+        open http://localhost:5001/wp-admin
+
+AMAZON S3 SETUP
+
+    Install plugin WPRO, create S3 bucket "BUCKETNAME".
+
+    Set bucket policy for global read access:
+        {
+            "Version": "2008-10-17",
+            "Statement": [
+                {
+                        "Sid": "Allow all",
+                        "Effect": "Allow",
+                        "Principal": {
+                                "AWS": "*"
+                        },
+                        "Action": "s3:GetObject",
+                        "Resource": "arn:aws:s3:::BUCKETNAME/*"
+                },
+                {
+                        "Sid": "Deny akseli if not user BUCKETUSER",
+                        "Effect": "Deny",
+                        "NotPrincipal": {
+                                "AWS": "arn:aws:iam::AWSORGID:user/BUCKETUSER"
+                        },
+                        "Action": "s3:GetObject",
+                        "Resource": "arn:aws:s3:::BUCKETNAME/BUCKETPATH/*"
+                }
+            ]
+        }
+
+    The bucket policy is needed to override possible object ACLs.
+    Assets are available without authentication, without need to modify the
+    object ACL, and akseli assets are explicitly denied, even if ACL permits.
+
+    Create IAM user "BUCKETUSER", set user policy for bucket full access:
+        {
+            "Statement": [
+                {
+                    "Sid": "Stmnt1",
+                    "Action": [ "s3:*" ],
+                    "Effect": "Allow",
+                    "Resource": [
+                        "arn:aws:s3:::BUCKETNAME",
+                        "arn:aws:s3:::BUCKETNAME/*"
+                    ]
+                }
+            ]
+        }
+
+    Create a sub-directory for every site/service, eg "yhtyma".
+
+    Upload pre-existing uploads (if any) from wp-content/uploads
+    to the bucket sub-directory.
+
+    Replace old absolute wp-content/uploads URLs in the database
+        open http://localhost:5999/searchreplacedb2.php
+        ## replace "localhost:5001/wp-content/uploads" with "BUCKETNAME.s3.amazonaws.com/BUCKETPATH"
+
+    Configure the WPRO plugin. Prefix is the sub-directory name.
+
+    Remove uploads from local storage and verify that all images,
+    attachments etc. work correctly.
+        rm -rf config/public/wp-content/uploads
+
+HEROKU SETUP (STAGING)
+
+    Create and configure the application
+        heroku create --org ORGNAME --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress HEROKUSTAGINAPPNAME
+        heroku config:set WORDPRESS_DIR=wordpress
+        heroku labs:enable user-env-compile
+
+    First push
+        git push heroku
+
+    Provision a bigger (1GB) database
+        heroku addons:add cleardb:punch
+
+    Check configuration
+        heroku config
+        # see the CLEARDB_DATABASE_URL for user, passwd, host and database name
+
+    Dump your local database and setup to CLEARDB
+        mysqldump -uroot DATABASENAME >~/zzz-my.sql
+        mysql -uxxx -pxxx -hxxx heroku_xxx <~/zzz-my.sql
+
+    Migrate database URLs
+        open http://localhost:5999/searchreplacedb2.php
+        ## specify CLEARDB database connection info
+        ## replace localhost:5001 with HEROKUSTAGINGAPPNAME.herokuapp.com
+
+HEROKU SETUP (PRODUCTION)
+
+    Create and configure the application. Push to heroku.
+        # same as for staging, except app name.
+
+    Provision a database, copy content from the staging database
+        heroku addons:add cleardb:punch --fork=`heroku config:get CLEARDB_DATABASE_URL --app HEROKUSTAGINGAPPNAME`
+        # it takes some time for forked data to appear
+
+    Migrate database URLs
+        open http://localhost:5999/searchreplacedb2.php
+        ## specify CLEARDB database connection info
+        ## replace HEROKUSTAGINGAPPURL with HEROKUPRODUCTIONAPPURL
+
