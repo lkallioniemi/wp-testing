@@ -17,40 +17,27 @@
 
 $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
 define("DB_NAME", trim($url["path"], "/"));
-// define("DB_NAME", "heroku_4eed1f5663e035f");
-
-/** MySQL database username */
 define("DB_USER", trim($url["user"]));
-// define("DB_USER", "b7cfc877a785ae");
-
-/** MySQL database password */
 define("DB_PASSWORD", trim($url["pass"]));
-// define("DB_PASSWORD", "db3717c2");
-
-/** MySQL hostname */
 define("DB_HOST", trim($url["host"]));
-// define("DB_HOST", "us-cdbr-east-03.cleardb.com");
-
-/** MySQL database port  */
 // define("DB_PORT", trim($url["port"]));
-
-/** Database Charset to use in creating database tables. */
 define("DB_CHARSET", "utf8");
 
 /** Allows both foobar.com and foobar.herokuapp.com to load media assets correctly. */
 // define("WP_SITEURL", "http://" . $_SERVER["HTTP_HOST"]);
 define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/wordpress');
 
-/** WP_HOME is your Blog Address (URL). */
-// define('WP_HOME', "http://" . $_SERVER["HTTP_HOST"]);
-
 define("FORCE_SSL_LOGIN", getenv("FORCE_SSL_LOGIN") == "true");
 define("FORCE_SSL_ADMIN", getenv("FORCE_SSL_ADMIN") == "true");
-if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
-  $_SERVER["HTTPS"] = "on";
+if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https") $_SERVER["HTTPS"] = "on";
+if ($_SERVER['SERVER_PORT'] == '443') $_SERVER["HTTPS"] = "on";
+
+$hosturl = ( $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
+// define( 'WP_HOME',        "$hosturl");
+define( 'WP_SITEURL',     "$hosturl/wordpress");
+define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
+define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
 
 /** The Database Collate type. Don't change this if in doubt. */
 define("DB_COLLATE", "utf8_swedish_ci");
@@ -111,11 +98,6 @@ define("WP_CACHE", getenv("WP_CACHE") == "true");
  * Disable the built-in cron job
  */
 define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
-
-define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/wordpress');
-
-define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
-define( 'WP_CONTENT_URL', ( $_SERVER['SERVER_PORT'] = '443' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] .'/wp-content' );
 
 /* That"s all, stop editing! Happy blogging. */
 

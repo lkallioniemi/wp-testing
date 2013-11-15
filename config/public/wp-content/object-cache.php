@@ -373,7 +373,6 @@ class WP_Object_Cache {
 				if (getenv("MEMCACHIER_USERNAME") && getenv("MEMCACHIER_PASSWORD")) {
 					$this->mc[$bucket]->setSaslAuthData(getenv("MEMCACHIER_USERNAME"), getenv("MEMCACHIER_PASSWORD"));
 				}
-
 			}
 		}
 		
