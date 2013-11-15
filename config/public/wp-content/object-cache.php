@@ -370,7 +370,9 @@ class WP_Object_Cache {
 				list ( $node, $port ) = explode(':', $server);
 	
 				$this->mc[$bucket]->addServer($node, $port);
-				$this->mc[$bucket]->setSaslAuthData(getenv("MEMCACHIER_USERNAME"), getenv("MEMCACHIER_PASSWORD"));
+				if (getenv("MEMCACHIER_USERNAME") && getenv("MEMCACHIER_PASSWORD")) {
+					$this->mc[$bucket]->setSaslAuthData(getenv("MEMCACHIER_USERNAME"), getenv("MEMCACHIER_PASSWORD"));
+				}
 
 			}
 		}
