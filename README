@@ -88,7 +88,7 @@ CREATING A NEW HEROKU APP
 
 DEPLOYING TO AN EXISTING HEROKU APP
 
-    git remote heroku set-url git@heroku.com:PROJECTNAME.git
+    git remote set-url heroku git@heroku.com:PROJECTNAME.git
     git push heroku master
 
 POPULATING THE REMOTE DATABASE
