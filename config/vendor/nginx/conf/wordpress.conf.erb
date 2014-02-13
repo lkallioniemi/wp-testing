@@ -1,3 +1,10 @@
+# Uncomment and fix after publish
+# server {
+#    listen          <%= ENV['PORT'] %>;
+#    server_name     YOURAPP.herokuapp.com;
+#    rewrite         ^ http://www.YOURDOMAIN.fi$request_uri? redirect;
+# }
+
 server {
   server_name       localhost;
   listen            <%= ENV['PORT'] %>;
