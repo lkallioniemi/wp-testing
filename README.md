@@ -3,37 +3,41 @@ wordpress-on-heroku
 
 ## Table of contents:
 
-* [Project structure] [project-structure]
-* [Prerequisites] [prerequisites]
-	* [Brew modules] [brew-modules] (PHP, MEMCACHED, MYSQL)
-	* [Heroku Toolbelt] [install-heroku]
-	* [Github repo] [github-repo]
-	* [Amazon S3 Bucket] [amazon-s3-bucket]
-* [Creating a new project] [create-new-project]
-* [Initial local setup] [local-setup]
-	* [Create a local MySQL Database] [create-db]
-	* [Setting up the local environment] [local-env]
-* [Heroku setup] [heroku-setup]
-	* [Create a new Heroku app] [create-heroku-app] (master)
-	* [Create a new Heroku app] [create-staging-app] (staging)
-* [Setting up WordPress] [wp-setup]
-	* [Configuration] [wp-config] (wp-config.php)
-	* [Localization] [wp-lang]
-	* [Linking to existing Heroku app] [link-to-existing-heroku-app]
-	* [Pushing to Heroku] [deploy-heroku] (master)
-	* [Pushing to staging enviroment] [deploy-staging] (staging)
-* [Accessing local WordPress installation] [start-local-wp]
-	* [Amazon S3 Setup] [amazon-setup]
-		* [Settings] [amazon-settings]
-		* [Transfer media assets] [copy-assets]
-* [Database management] [db-management]
-	* [Starting Search and Replace DB] [search-replace-db]
-	* [Export to Heroku] [export-local-db]
-	* [Import from Heroku] [import-heroku-db]
-* [Import from legacy WordPress installation] [import-wordpress]
-* [Workflow] [workflow]
+* [Getting started][getting-started]
+	* [Project structure][project-structure]
+	* [Installation][installation]
+	* [Normal workflow][normal-workflow]
+* [Prerequisites][prerequisites]
+	* [Brew modules][brew-modules] (PHP, MEMCACHED, MYSQL)
+	* [Heroku Toolbelt][install-heroku]
+	* [Github repo][github-repo]
+	* [Amazon S3 Bucket][amazon-s3-bucket]
+* [Creating a new project][create-new-project]
+* [Initial local setup][local-setup]
+	* [Create a local MySQL Database][create-db]
+	* [Setting up the local environment][local-env]
+* [Heroku setup][heroku-setup]
+	* [Create a new Heroku app][create-heroku-app] (master)
+	* [Create a new Heroku app][create-staging-app] (staging)
+* [Setting up WordPress][wp-setup]
+	* [Configuration][wp-config] (wp-config.php)
+	* [Localization][wp-lang]
+	* [Linking to existing Heroku app][link-to-existing-heroku-app]
+	* [Pushing to Heroku][deploy-heroku] (master)
+	* [Pushing to staging enviroment][deploy-staging] (staging)
+* [Accessing local WordPress installation][start-local-wp]
+	* [Amazon S3 Setup][amazon-setup]
+		* [Settings][amazon-settings]
+		* [Transfer media assets][copy-assets]
+* [Database management][db-management]
+	* [Starting Search and Replace DB][search-replace-db]
+	* [Export to Heroku][export-local-db]
+	* [Import from Heroku][import-heroku-db]
+* [Import from legacy WordPress installation][import-wordpress]
 
-## <a name="project-structure"></a>PROJECT STRUCTURE
+## <a name="getting-started"></a>GETTING STARTED
+
+### <a name="project-structure"></a>Project structure
 
 ```
 ├── config
@@ -51,9 +55,30 @@ wordpress-on-heroku
 └── README.md
 ```
 
+### Installation:
+
+1. Clone the repository for local development
+2. Remove `.git`
+3. Create and initialize new Github repositry
+4. Create a new Amazon S3 Bucket
+5. Create a local database
+3. Set everything up on localhost, commit, and [push to Github][deploy-github]
+4. [Export local database to Heroku][export-local-db]
+4. Push to [master][deploy-heroku] and [staging][deploy-staging]
+
+See [creating a new project][create-new-project] for details.
+
+### Normal development cycle:
+
+1. Clone the repository for local development
+2. [Import database][import-heroku-db] from Heroku to localhost
+3. Develop on localhost, commit, and [push to Github][deploy-github]
+4. Next you want to check that everything is working by [pushing to the staging environment][deploy-staging]
+5. If everything is ok, [push to master][deploy-heroku]
+
 ## <a name="prerequisites"></a>PREREQUISITES
 
-### <a name="brew-modules"></a>BREW MODULES (PHP, MEMCACHED, MYSQL)
+### <a name="brew-modules"></a>Brew modules (PHP, MEMCACHED, MYSQL)
 
 Use brew install to install the following modules:
 
@@ -88,19 +113,19 @@ Or, if you don't want/need `launchctl`, you can just run:
 
 	Todo ...
 
-### <a name="install-heroku"></a>HEROKU TOOLBELT
+### <a name="install-heroku"></a>Heroku Toolbelt
 
 For instructions on how to set up Heroku, follow these steps: <https://toolbelt.heroku.com/>
 
-### <a name="github-repo"></a>GITHUB REPOSITORY
+### <a name="github-repo"></a>Github repository
 
-Create a new repository for this project on [Github] [github-frc]. If you don't have sufficent priviledges, ask a fellow coder for help.
+Create a new repository for this project on [Github][github-frc]. If you don't have sufficent priviledges, ask a fellow coder for help.
 
-### <a name="amazon-s3-bucket"></a>AMAZON S3 BUCKET
+### <a name="amazon-s3-bucket"></a>Amazon S3 Bucket
 
-You will also need to create an [Amazon S3 Bucket] [amazon-s3-console] and get a separate **S3 client**. If you don't have sufficent priviledges to access the S3 Bucket, you know who to ask.
+You will also need to create an [Amazon S3 Bucket][amazon-s3-console] and get a separate **S3 client**. If you don't have sufficent priviledges to access the S3 Bucket, you know who to ask.
 
-The client will be used to transfer over files and make sure WordPress is set up correctly. We recommend using [Transmit] (http://www.panic.com/transmit/), unless you prefer using the browser. You will need the *AWS key*, *secret* and *bucket name*.
+The client will be used to transfer over files and make sure WordPress is set up correctly. We recommend using [Transmit](http://www.panic.com/transmit/), unless you prefer using the browser. You will need the *AWS key*, *secret* and *bucket name*.
 
 ## <a name="create-new-project"></a>CREATING A NEW PROJECT
 
@@ -117,7 +142,7 @@ Remove the existing .git repository so you don't accidentally push back to the s
 $ rm -rf .git
 ```
 
-Initialize the Github repository which [you created earlier] [github-repo]:
+Initialize the Github repository which [you created earlier][github-repo]:
 
 ```sh
 $ git init
@@ -151,7 +176,7 @@ export `cat .env`
 
 ## <a name="heroku-setup"></a>HEROKU SETUP
 
-Make sure you [installed everything you need] [install-heroku] before you proceed.
+Make sure you [installed everything you need][install-heroku] before you proceed.
 
 ### <a name="create-heroku-app"></a>Create a new heroku app (master)
 
@@ -159,7 +184,7 @@ Make sure you [installed everything you need] [install-heroku] before you procee
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
 ```
 
-Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory.
+Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
 Check the settings and make sure all the addons are installed. If not, you will have to add them manually.
 
@@ -179,7 +204,7 @@ For a full list of the required addons, see <https://github.com/frc/heroku-build
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME-staging
 ```
 
-Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory.
+Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
 You will need to check the addons again and make sure everything is there. If they didn't show up, see the instructions above on how to add them manually.
 
@@ -234,6 +259,7 @@ $ git push heroku master
 ### <a name="deploy-heroku"></a>Pushing to Heroku
 
 Setting up the remote (you only need to do this once):
+
 ```sh
 $ heroku info
 $ git remote add heroku HEROKUGITURL
@@ -242,6 +268,7 @@ $ git remote add heroku HEROKUGITURL
 Pushing:
 
 ```sh
+$ git push # always push to Github first
 $ git push heroku master
 ```
 
@@ -257,6 +284,7 @@ $ git remote add dev HEROKUSTAGINGGITURL
 Pushing:
 
 ```sh
+$ git push # always push to Github first
 $ git push dev master
 ```
 
@@ -274,7 +302,7 @@ Save the *admin username* and *password* as a comment in `config/public/wp-confi
 
 ### <a name="amazon-setup"></a>Amazon S3 Setup
 
-Access your local WordPress installation and activate the [WPRO plugin] (https://github.com/alfreddatakillen/wpro) plugin (this should already be included in the buildpack).
+Access your local WordPress installation and activate the [WPRO plugin](https://github.com/alfreddatakillen/wpro) plugin (this should already be included in the buildpack).
 
 Get access to the shared bucket `BUCKETNAME` and check the user policy:
 
@@ -295,7 +323,7 @@ User policy:
 #### <a name="amazon-settings"></a> Configure (Settings / WPRO Settings):
 
 * Prepend all paths with folder: PROJECTNAME/staging
-* AWS Key & AWS Secret: Get these from the [console] [amazon-s3-bucket]
+* AWS Key & AWS Secret: Get these from the [console][amazon-s3-bucket]
 * S3 Bucket: BUCKETNAME
 * [x] Virtual hosting is enabled for this bucket.
 * Bucket AWS Region: EU (Ireland) Region
@@ -330,8 +358,8 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 ### <a name="export-local-db"></a>Export local database to Heroku
 
-1. Dump your local database to CLEARDB
-	
+1. Dump local database to CLEARDB
+
 	```sh
 	$ heroku config:get CLEARDB_DATABASE_URL
 	$ mysqldump -uroot DATABASENAME >/tmp/DATABASENAME.sql
@@ -339,7 +367,6 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	```
 
 2. Migrate database URLs
-
 	* Start [Search Replace DB](#search-replace-db) and open <http://localhost:5999/>
 	* Specify **CLEARDB** database connection info
 	* Replace `localhost:5000` with `HEROKUAPPURL`
@@ -349,7 +376,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	```sh
 	$ heroku info
 	```
-
+	
 3. Flush the `memcached`
 
 	```sh
@@ -371,13 +398,13 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	* Specify **LOCAL** database connection info
 	* Replace `HEROKUAPPURL` with `localhost:5000`
 
-3. Flush the local memcached
+3. Flush the local `memcached`
 
-See `$ brew info memcached` for details.
+	See `$ brew info memcached` for details.
 
 ### <a name="import-wordpress"></a>IMPORT FROM LEGACY WP INSTALLATION
 
-Create a new project, [see above] [create-new-project].
+Create a new project, [see above][create-new-project].
 
 ### Dump the database (at the old server HOSTNAME)
 
@@ -392,18 +419,18 @@ You will need to get access to the old server in order to be able to access the 
 
 #### Alternative way
 
-You can also use an Mac OS app like [Sequel] (http://www.sequelpro.com/) to save some time:
+You can also use an Mac OS app like [Sequel](http://www.sequelpro.com/) to save some time:
 
 1. Create an account for the remote `HOSTNAME`
 2. Access the remote database
 3. **File** > **Export** and **save it** to your local drive with the default settings
-4. Create another account for your local installation (assuming you've already created [a local database] [local-db])
+4. Create another account for your local installation (assuming you've already created [a local database][local-db])
 5. Access the local database
 6. **File** > **Import**
 
 #### Migrate database URLs `LEGACYAPPURL` => `localhost:5000`
 
-1. Start [Search Replace DB] (#search-replace-db) and open <http://localhost:5999/>
+1. Start [Search Replace DB](#search-replace-db) and open <http://localhost:5999/>
 2. Specify local database connection info
 3. Replace `LEGACYAPPURL` with `localhost:5000`
 
@@ -421,12 +448,12 @@ $ php -S localhost:5000 -t config/public
 
 Check that everything is ok <http://localhost:5000/wp-admin/>
 
-You will need to activate the [WPRO plugin] (https://github.com/alfreddatakillen/wpro) to make WordPress sync media assets to the S3 Bucket. See [Amazon S3 Setup] [amazon-setup] for information on how to set this up.
+You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/wpro) to make WordPress sync media assets to the S3 Bucket. See [Amazon S3 Setup][amazon-setup] for information on how to set this up.
 
 #### <a name="transfer-assets-to-s3"></a>Transfer assets to S3 Bucket
 
-1. Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/PROJECTNAME/staging` directory. See [Amazon S3 Setup] [amazon-setup] for information on how to upload media assets to the bucket.
-2. Start [Search Replace DB] [search-replace-db] and open <http://localhost:5999/>
+1. Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/PROJECTNAME/staging` directory. See [Amazon S3 Setup][amazon-setup] for information on how to upload media assets to the bucket.
+2. Start [Search Replace DB][search-replace-db] and open <http://localhost:5999/>
 3. Run MySQL command:
 
 	```mysql
@@ -440,18 +467,10 @@ You will need to activate the [WPRO plugin] (https://github.com/alfreddatakillen
 	rm -rf config/public/wp-content/uploads
 	```
 
-## <a name="workflow"></a>WORKFLOW
-
-Normal development cycle:
-
-1. Clone the repository for local development ( see "[Getting Started] [getting-started]" )
-2. [Import database] [import-heroku-db] from Heroku to localhost
-3. Develop on localhost, commit, and [push to Github] [deploy-github]
-4. Next you want to check that everything is working by [pushing to the staging environment] [deploy-staging]
-5. If everything is ok, [push to master] [deploy-heroku]
-
 [getting-started]:#getting-started
 [project-structure]:#project-structure
+[installation]:#installation-steps
+[normal-workflow]:#normal-workflow
 [prerequisites]:#prerequisites
 [amazon-s3-bucket]:#amazon-s3-bucket
 [brew-modules]:#brew-modules
@@ -475,6 +494,7 @@ Normal development cycle:
 [create-heroku-app]:#create-heroku-app
 [create-staging-app]:#create-staging-app
 [link-to-existing-heroku-app]:#link-to-existing-heroku-app
+[deploy-github]:#deploy-github
 [deploy-heroku]:#deploy-heroku
 [deploy-staging]:#deploy-staging
 [db-management]:#db-management
