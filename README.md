@@ -58,11 +58,35 @@ wordpress-on-heroku
 Use brew install to install the following modules:
 
 ```sh
-$ brew install php55 php55-memcache memcached mysql
+$ brew install php55 php55-memcache memcached mysql libevent
 ```
 See <https://github.com/josegonzalez/homebrew-php> for more information on how to install these with brew.
 
-When the installation is done, start memcached and mysql as instructed.
+When the installation is done, start memcached and mysql as instructed. If you already have them installed, make sure you've got the following setps covered:
+
+#### Memcached
+
+To have launchd start `memcached` at login:
+
+```sh
+ln -sfv /usr/local/opt/memcached/*.plist ~/Library/LaunchAgents
+```
+
+Then to load `memcached` now:
+
+```sh
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+```
+
+Or, if you don't want/need `launchctl`, you can just run:
+
+```sh
+/usr/local/opt/memcached/bin/memcached
+```
+
+#### MySQL
+
+	Todo ...
 
 ### <a name="install-heroku"></a>HEROKU TOOLBELT
 
@@ -70,7 +94,7 @@ For instructions on how to set up Heroku, follow these steps: <https://toolbelt.
 
 ### <a name="github-repo"></a>GITHUB REPOSITORY
 
-Create a new repository for this project on [Github] [github-frc] If you don't have sufficent priviledges, ask a fellow coder for help.
+Create a new repository for this project on [Github] [github-frc]. If you don't have sufficent priviledges, ask a fellow coder for help.
 
 ### <a name="amazon-s3-bucket"></a>AMAZON S3 BUCKET
 
@@ -210,7 +234,6 @@ $ git push heroku master
 ### <a name="deploy-heroku"></a>Pushing to Heroku
 
 Setting up the remote (you only need to do this once):
-
 ```sh
 $ heroku info
 $ git remote add heroku HEROKUGITURL
@@ -277,7 +300,7 @@ User policy:
 * [x] Virtual hosting is enabled for this bucket.
 * Bucket AWS Region: EU (Ireland) Region
 
-Test by uploading new media, and make sure the URL contains `BUCKETNAME`.
+Test by uploading new media, and make sure the URL contains `BUCKETNAME`
 
 ### <a name="copy-existing-assets"></a>Upload pre-existing content
 
@@ -305,15 +328,48 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 **Note**: Whenever we reference `http://localhost:5999/` you will need have this running in the background.
 
-### <a name="export-local-db"></a>EXPORT Local database TO Heroku
+### <a name="export-local-db"></a>Export local database to Heroku
 
-	Todo ...
+1. Dump your local database to CLEARDB
+	
+	```sh
+	$ heroku config:get CLEARDB_DATABASE_URL
+	$ mysqldump -uroot DATABASENAME >/tmp/DATABASENAME.sql
+	$ mysql -uxxx -pxxx -hxxx heroku_xxx </tmp/DATABASENAME.sql ## see config above
+	```
 
-### <a name="import-heroku-db"></a>IMPORT database FROM Heroku
+2. Migrate database URLs
 
-	Todo ...
+	* Start [Search Replace DB](#search-replace-db) and open <http://localhost:5999/>
+	* Specify **CLEARDB** database connection info
+	* Replace `localhost:5000` with `HEROKUAPPURL`
 
-## <a name="import-wordpress"></a>IMPORT FROM LEGACY WORDPRESS INSTALLATION
+3. Flush the memcached
+
+	```sh
+	heroku addons:open memcachier
+	```
+
+### <a name="import-heroku-db"></a>Import database from Heroku
+
+1. Dump CLEARDB to your local database
+
+	```sh
+	$ heroku config:get CLEARDB_DATABASE_URL
+	$ mysqldump -uxxx -pxxx -hxxx heroku_xxx >/tmp/DATABASENAME.sql ## see config above
+	$ mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
+	```
+
+2. Migrate database URLs
+	* Start [Search Replace DB](#search-replace-db) and open <http://localhost:5999/>
+	* Specify **LOCAL** database connection info
+	* Replace `HEROKUAPPURL` with `localhost:5000`
+
+3. Flush the memcached
+
+See `$ brew info memcached` for details.
+
+### <a name="import-wordpress"></a>IMPORT FROM LEGACY WP INSTALLATION
 
 Create a new project, [see above] [create-new-project].
 
