@@ -147,6 +147,16 @@ For a full list, see <https://github.com/frc/heroku-buildpack-wordpress/blob/mas
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
+#### <a name="create-heroku-app"></a>Create a heroku app for staging
+
+This will be used to test any recent changes before pushing it to the live instance `heroku`
+
+```sh
+$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME-staging
+```
+
+You will need to check the addons again and make sure everything is there. If they didn't show up, see above for instructions on how to add them manually.
+
 ### <a name="wp-setup"></a>SETTING UP WORDPRESS
 
 ```sh
@@ -181,7 +191,17 @@ $ git push heroku master
 
 #### <a name="deploy-staging"></a>Pushing to staging environment
 
-	Todo ...
+```sh
+$ heroku info
+$ git remote add dev HEROKUSTAGINGGITURL
+$ git push dev master
+```
+
+Alternatively, if you've created the staging branch, you can also push it using this command:
+
+```sh
+$ git push dev staging
+```
 
 ### <a name="deploy-to-existing"></a>Deploying to an existing Heroku app
 
