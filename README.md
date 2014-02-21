@@ -345,11 +345,11 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	* Replace `localhost:5000` with `HEROKUAPPURL`
 
 	To get the `HEROKUAPPURL`, type:
-	
+
 	```sh
 	$ heroku info
 	```
-	
+
 3. Flush the `memcached`
 
 	```sh
