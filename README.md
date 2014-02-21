@@ -30,7 +30,6 @@ wordpress-on-heroku
 	* [Import from Heroku] [import-heroku-db]
 * [Import from legacy WordPress installation] [import-wordpress]
 * [Workflow] [workflow]
-______
 
 ## <a name="project-structure"></a>PROJECT STRUCTURE
 
@@ -235,7 +234,8 @@ Test by uploading new media, and make sure the URL contains `BUCKETNAME`.
 This script was made to aid the process of migrating PHP and MySQL based websites. This is used to rewrite URLs stored in the database, including the ones in [PHP serialized format](http://php.net/manual/en/function.serialize.php).
 
 Source: <https://github.com/interconnectit/Search-Replace-DB/>
-Located in 
+
+Project location: `config/vendor/php`
 
 #### Usage
 
