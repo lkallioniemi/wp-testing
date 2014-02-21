@@ -9,38 +9,13 @@
  *
  * This file is used by the wp-config.php creation script during the
  * installation. You don't have to use the web site, you can just copy this file
- * to "wp-config.php" and fill in the values.
+ * to 'wp-config.php' and fill in the values.
+ *
+ * Admin access to WordPress:
+ * username / password
  *
  * @package WordPress
  */
-
-
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-
-define("DB_NAME", trim($url["path"], "/"));
-define("DB_USER", trim($url["user"]));
-define("DB_PASSWORD", trim($url["pass"]));
-define("DB_HOST", trim($url["host"]));
-// define("DB_PORT", trim($url["port"]));
-define("DB_CHARSET", "utf8");
-
-/** Allows both foobar.com and foobar.herokuapp.com to load media assets correctly. */
-// define("WP_SITEURL", "http://" . $_SERVER["HTTP_HOST"]);
-define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/wordpress');
-
-define("FORCE_SSL_LOGIN", getenv("FORCE_SSL_LOGIN") == "true");
-define("FORCE_SSL_ADMIN", getenv("FORCE_SSL_ADMIN") == "true");
-if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https") $_SERVER["HTTPS"] = "on";
-if ($_SERVER['SERVER_PORT'] == '443') $_SERVER["HTTPS"] = "on";
-
-$hosturl = ( $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-// define( 'WP_HOME',        "$hosturl");
-define( 'WP_SITEURL',     "$hosturl/wordpress");
-define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
-define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
-
-/** The Database Collate type. Don't change this if in doubt. */
-define("DB_COLLATE", "utf8_swedish_ci");
 
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -60,25 +35,23 @@ define("SECURE_AUTH_SALT", "put your unique phrase here");
 define("LOGGED_IN_SALT",   "put your unique phrase here");
 define("NONCE_SALT",       "put your unique phrase here");
 
-/**#@-*/
-
 /**
  * WordPress Database Table prefix.
  *
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = "wp_";
+$table_prefix  = 'frc_';
 
 /**
  * WordPress Localized Language, defaults to English.
  *
  * Change this to localize WordPress. A corresponding MO file for the chosen
  * language must be installed to wp-content/languages. For example, install
- * de_DE.mo to wp-content/languages and set WPLANG to "de_DE" to enable German
+ * de_DE.mo to wp-content/languages and set WPLANG to 'de_DE' to enable German
  * language support.
  */
-define("WPLANG", "");
+define('WPLANG', 'fi');
 
 /**
  * For developers: WordPress debugging mode.
@@ -87,28 +60,64 @@ define("WPLANG", "");
  * It is strongly recommended that plugin and theme developers use WP_DEBUG
  * in their development environments.
  */
-define("WP_DEBUG", false);
+define('WP_DEBUG', false);
+
+/**
+ * No need to edit below this point
+ */
+$url = parse_url( getenv('CLEARDB_DATABASE_URL') );
+
+define('DB_NAME', trim( $url['path'], '/' ));
+define('DB_USER', trim( $url['user'] ));
+define('DB_PASSWORD', trim( $url['pass'] ));
+define('DB_HOST', trim( $url['host'] ));
+// define('DB_PORT', trim($url['port']));
+define('DB_CHARSET', 'utf8');
+
+/** Allows both foobar.com and foobar.herokuapp.com to load media assets correctly. */
+
+// define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST']);
+define('WP_SITEURL', 'http://' . $_SERVER['HTTP_HOST'] . '/wordpress');
+
+define('FORCE_SSL_LOGIN', getenv('FORCE_SSL_LOGIN') == 'true');
+define('FORCE_SSL_ADMIN', getenv('FORCE_SSL_ADMIN') == 'true');
+if ( $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) $_SERVER['HTTPS'] = 'on';
+if ( $_SERVER['SERVER_PORT'] == '443' ) $_SERVER['HTTPS'] = 'on';
+
+$hosturl = ( $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
+// define( 'WP_HOME', '$hosturl');
+define('WP_SITEURL', $hosturl . '/wordpress');
+define('WP_CONTENT_URL', $hosturl . '/wp-content');
+define('WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/wp-content');
+
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', 'utf8_swedish_ci');
 
 /**
  * Enable the WordPress Object Cache
  */
-define("WP_CACHE", getenv("WP_CACHE") == "true");
+define('WP_CACHE', getenv('WP_CACHE') == 'true');
+
+/**
+	Enable WordPress udpates
+*/
+define('FS_METHOD', 'direct');
 
 /**
  * Disable the built-in cron job
  */
-define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
+define('DISABLE_WP_CRON', getenv('DISABLE_WP_CRON') == 'true');
 
 /**
  * Disable automatic updates, they won't survive restarting and scaling dynos
  */
-define( 'AUTOMATIC_UPDATER_DISABLED', true );
+define('AUTOMATIC_UPDATER_DISABLED', true);
 
-/* That"s all, stop editing! Happy blogging. */
+/* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
-if ( !defined("ABSPATH") )
-  define("ABSPATH", dirname(__FILE__) . "/");
+if ( ! defined('ABSPATH') )
+	define('ABSPATH', dirname(__FILE__) . '/');
 
 /** Sets up WordPress vars and included files. */
-require_once(ABSPATH . "wp-settings.php");
+require_once(ABSPATH . 'wp-settings.php');
