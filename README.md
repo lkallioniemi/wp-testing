@@ -344,10 +344,16 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	* Specify **CLEARDB** database connection info
 	* Replace `localhost:5000` with `HEROKUAPPURL`
 
-3. Flush the memcached
+	To get the `HEROKUAPPURL`, type:
+	
+	```sh
+	$ heroku info
+	```
+	
+3. Flush the `memcached`
 
 	```sh
-	heroku addons:open memcachier
+	$ heroku addons:open memcachier
 	```
 
 ### <a name="import-heroku-db"></a>Import database from Heroku
@@ -365,7 +371,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	* Specify **LOCAL** database connection info
 	* Replace `HEROKUAPPURL` with `localhost:5000`
 
-3. Flush the memcached
+3. Flush the local memcached
 
 See `$ brew info memcached` for details.
 
