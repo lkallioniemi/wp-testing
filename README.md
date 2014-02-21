@@ -154,6 +154,11 @@ $ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
 $ heroku labs:enable user-env-compile --app PROJECTNAME
 ```
 
+Go to `config/public` and edit the `wp-config.php` file:
+
+* Generate new Authentication Unique keys and Salts
+* Define a new Database Table prefix
+
 ### <a name="wp-lang"></a>Localization
 
 To specify a different WordPress language (for example Finnish), type:
@@ -161,6 +166,10 @@ To specify a different WordPress language (for example Finnish), type:
 ```sh
 $ heroku config:add WORDPRESS_LANGUAGE=fi
 ```
+
+You will also need to define the language in the `config/public/wp-config.php` file:
+
+	define('WPLANG', 'fi');
 
 ### <a name="deploy-heroku"></a>Pushing to Heroku
 
@@ -325,9 +334,7 @@ You will need to activate the [WPRO plugin] (https://github.com/alfreddatakillen
 Normal development cycle:
 
 1. Clone the repository for local development ( see "[Getting Started] [getting-started]" )
-
 2. [Import database] [import-heroku-db] from Heroku to localhost
-
 3. Develop on localhost, commit, and [push to Heroku] [deploy-heroku] for staging
 
 [getting-started]:#getting-started
