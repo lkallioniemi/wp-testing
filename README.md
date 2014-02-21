@@ -147,7 +147,7 @@ For a full list, see <https://github.com/frc/heroku-buildpack-wordpress/blob/mas
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
-### <a name="setup-wp"></a>SETTING UP WORDPRESS
+### <a name="wp-setup"></a>SETTING UP WORDPRESS
 
 ```sh
 $ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
