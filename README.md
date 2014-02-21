@@ -14,12 +14,14 @@ wordpress-on-heroku
 	* [Create a local MySQL Database] [create-db]
 	* [Setting up the local environment] [local-env]
 * [Heroku setup] [heroku-setup]
-	* [Create a new Heroku app] [create-heroku-app]
-	* [Setting up WordPress] [wp-setup]
+	* [Create a new Heroku app] [create-heroku-app] (master)
+	* [Create a new Heroku app] [create-staging-app] (staging)
+* [Setting up WordPress] [wp-setup]
+	* [Configuration] [wp-config] (wp-config.php)
 	* [Localization] [wp-lang]
-	* [Deploying to existing Heroku app] [deploy-to-existing]
-	* [Pushing to Heroku] [deploy-heroku]
-		* [Pushing to staging enviroment] [deploy-staging] (dev)
+	* [Linking to existing Heroku app] [link-to-existing-heroku-app]
+	* [Pushing to Heroku] [deploy-heroku] (master)
+	* [Pushing to staging enviroment] [deploy-staging] (staging)
 * [Accessing local WordPress installation] [start-local-wp]
 	* [Amazon S3 Setup] [amazon-setup]
 		* [Settings] [amazon-settings]
@@ -127,15 +129,15 @@ export `cat .env`
 
 Make sure you [installed everything you need] [install-heroku] before you proceed.
 
-### <a name="create-heroku-app"></a>Create a new heroku app
-
-Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory. Once you've joined it, type:
+### <a name="create-heroku-app"></a>Create a new heroku app (master)
 
 ```sh
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
 ```
 
-Check Heroku and make sure all the addons are installed. If not, you will have to add them manually.
+Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory.
+
+Check the settings and make sure all the addons are installed. If not, you will have to add them manually.
 
 Example to add them manually from the command line:
 
@@ -143,26 +145,41 @@ Example to add them manually from the command line:
 $ heroku addons:add cleardb:ignite --app PROJECTNAME
 ```
 
-For a full list, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
+For a full list of the required addons, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
-#### <a name="create-heroku-app"></a>Create a heroku app for staging
-
-This will be used to test any recent changes before pushing it to the live instance `heroku`
+### <a name="create-staging-app"></a>Create a new heroku app (staging)
 
 ```sh
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME-staging
 ```
 
-You will need to check the addons again and make sure everything is there. If they didn't show up, see above for instructions on how to add them manually.
+Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory.
 
-### <a name="wp-setup"></a>SETTING UP WORDPRESS
+You will need to check the addons again and make sure everything is there. If they didn't show up, see the instructions above on how to add them manually.
+
+**Note**: Since this is a staging environment, the database should be set to `ignite` to avoid any unnecessary costs.
+
+## <a name="wp-setup"></a>SETTING UP WORDPRESS
+
+Set the WordPress directory for both master and staging:
 
 ```sh
 $ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
-$ heroku labs:enable user-env-compile --app PROJECTNAME
+$ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME-staging
 ```
+
+WordPress will be unpacked to this location everytime you push to Heroku. By having it in a separate directory - as opposed to unpacking it to  `config/public/` - we avoid any possible conflicts with our own files.
+
+Set the environment variables:
+
+```sh
+$ heroku labs:enable user-env-compile --app PROJECTNAME
+$ heroku labs:enable user-env-compile --app PROJECTNAME-staging
+```
+
+### <a name="wp-config"></a>wp-config.php
 
 Go to `config/public` and edit the `wp-config.php` file:
 
@@ -181,35 +198,43 @@ You will also need to define the language in the `config/public/wp-config.php` f
 
 	define('WPLANG', 'fi');
 
-### <a name="deploy-heroku"></a>Pushing to Heroku
-
-```sh
-$ heroku info
-$ git remote add heroku HEROKUGITURL
-$ git push heroku master
-```
-
-#### <a name="deploy-staging"></a>Pushing to staging environment
-
-```sh
-$ heroku info
-$ git remote add dev HEROKUSTAGINGGITURL
-$ git push dev master
-```
-
-Alternatively, if you've created the staging branch, you can also push it using this command:
-
-```sh
-$ git push dev staging
-```
-
-### <a name="deploy-to-existing"></a>Deploying to an existing Heroku app
+### <a name="link-to-existing-heroku-app"></a>Linking to an existing Heroku app
 
 If your site is already running on Heroku, you can set the remote and start pushing there:
 
 ```sh
 $ git remote set-url heroku git@heroku.com:PROJECTNAME.git
 $ git push heroku master
+```
+
+### <a name="deploy-heroku"></a>Pushing to Heroku
+
+Setting up the remote (you only need to do this once):
+
+```sh
+$ heroku info
+$ git remote add heroku HEROKUGITURL
+```
+
+Pushing:
+
+```sh
+$ git push heroku master
+```
+
+### <a name="deploy-staging"></a>Pushing to staging environment
+
+Setting up the remote (you only need to do this once):
+
+```sh
+$ heroku info
+$ git remote add dev HEROKUSTAGINGGITURL
+```
+
+Pushing:
+
+```sh
+$ git push dev master
 ```
 
 ## <a name="local-wp"></a>ACCESSING WORDPRESS LOCALLY
@@ -359,7 +384,9 @@ Normal development cycle:
 
 1. Clone the repository for local development ( see "[Getting Started] [getting-started]" )
 2. [Import database] [import-heroku-db] from Heroku to localhost
-3. Develop on localhost, commit, and [push to Heroku] [deploy-heroku] for staging
+3. Develop on localhost, commit, and [push to Github] [deploy-github]
+4. Next you want to check that everything is working by [pushing to the staging environment] [deploy-staging]
+5. If everything is ok, [push to master] [deploy-heroku]
 
 [getting-started]:#getting-started
 [project-structure]:#project-structure
@@ -375,6 +402,7 @@ Normal development cycle:
 [create-db]:#create-db
 [local-env]:#local-env
 [wp-setup]:#wp-setup
+[wp-config]:#wp-config
 [wp-lang]:#wp-lang
 [start-local-wp]:#start-local-wp
 [amazon-setup]:#amazon-setup
@@ -382,8 +410,9 @@ Normal development cycle:
 [copy-assets]:#copy-assets
 [copy-existing-assets]:#copy-existing-assets
 [heroku-setup]:#heroku-setup
-[deploy-to-existing]:#deploy-to-existing
 [create-heroku-app]:#create-heroku-app
+[create-staging-app]:#create-staging-app
+[link-to-existing-heroku-app]:#link-to-existing-heroku-app
 [deploy-heroku]:#deploy-heroku
 [deploy-staging]:#deploy-staging
 [db-management]:#db-management
