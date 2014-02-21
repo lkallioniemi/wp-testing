@@ -106,7 +106,7 @@ $ git push -u origin master
 ### <a name="create-db"></a>Create a local MySQL database
 
 ```sh
-$ mysqladmin -uroot create DATABASENAME
+$ mysqladmin -uroot create DATABASENAME
 ```
 
 ### <a name="local-env"></a>Setting up the local environment
@@ -132,7 +132,7 @@ Make sure you [installed everything you need] [install-heroku] before you procee
 Join the app on [Heroku] (https://www.heroku.com/) by logging in and accessing the [frc apps] (https://dashboard.heroku.com/orgs/frc/apps) directory. Once you've joined it, type:
 
 ```sh
-$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
+$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
 ```
 
 Check Heroku and make sure all the addons are installed. If not, you will have to add them manually.
@@ -150,8 +150,8 @@ For a full list, see <https://github.com/frc/heroku-buildpack-wordpress/blob/mas
 ### <a name="wp-setup"></a>SETTING UP WORDPRESS
 
 ```sh
-$ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
-$ heroku labs:enable user-env-compile --app PROJECTNAME
+$ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
+$ heroku labs:enable user-env-compile --app PROJECTNAME
 ```
 
 Go to `config/public` and edit the `wp-config.php` file:
@@ -174,9 +174,9 @@ You will also need to define the language in the `config/public/wp-config.php` f
 ### <a name="deploy-heroku"></a>Pushing to Heroku
 
 ```sh
-$ heroku info
+$ heroku info
 $ git remote add heroku HEROKUGITURL
-$ git push heroku master
+$ git push heroku master
 ```
 
 #### <a name="deploy-staging"></a>Pushing to staging environment
@@ -188,7 +188,7 @@ $ git push heroku master
 If your site is already running on Heroku, you can set the remote and start pushing there:
 
 ```sh
-$ git remote set-url heroku git@heroku.com:PROJECTNAME.git
+$ git remote set-url heroku git@heroku.com:PROJECTNAME.git
 $ git push heroku master
 ```
 
@@ -235,8 +235,12 @@ User policy:
 Test by uploading new media, and make sure the URL contains `BUCKETNAME`.
 
 ### <a name="copy-existing-assets"></a>Upload pre-existing content
-	
+
+	Todo ...
+
 ## <a name="db-management"></a>DATABASE MANAGEMENT
+
+	Todo ...
 
 ### <a name="search-replace-db"></a>Search Replace DB
 
@@ -250,7 +254,7 @@ Project location: `config/vendor/php`
 
 Go to `config/vendor/php/Search-Replace-DB-master/` and start the server:
 
-	$ php -S localhost:5999 -t .
+	$ php -S localhost:5999 -t .
 
 Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry run` button to do a test run without searching/replacing.
 
