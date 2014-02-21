@@ -332,11 +332,9 @@ Test by uploading new media, and make sure the URL contains `BUCKETNAME`
 
 ### <a name="copy-existing-assets"></a>Upload pre-existing content
 
-	Todo ...
+Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/PROJECTNAME/`
 
 ## <a name="db-management"></a>DATABASE MANAGEMENT
-
-	Todo ...
 
 ### <a name="search-replace-db"></a>Search Replace DB
 
