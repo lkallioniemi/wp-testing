@@ -358,10 +358,17 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 1. Dump local database to CLEARDB
 
+	If there's content in CLEARDB database, take a backup:
+	* Go to <https://dashboard.heroku.com/orgs/frc/apps>
+	* Click your APPNAME
+	* Click "ClearDB MySQL Database"
+	* Click the correct database (check from heroku config)
+	* Open Backups & Jobs tab
+	* Click "Create a backup now"
+
 	```sh
 	$ heroku config:get CLEARDB_DATABASE_URL
-	$ mysqldump -uroot DATABASENAME >/tmp/DATABASENAME.sql
-	$ mysql -uxxx -pxxx -hxxx heroku_xxx </tmp/DATABASENAME.sql ## see config above
+	$ mysqldump -uroot DATABASENAME | mysql -uxxx -pxxx -hxxx heroku_xxx ## see config above
 	```
 
 2. Migrate database URLs
@@ -387,8 +394,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 	```sh
 	$ heroku config:get CLEARDB_DATABASE_URL
-	$ mysqldump -uxxx -pxxx -hxxx heroku_xxx >/tmp/DATABASENAME.sql ## see config above
-	$ mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
+	$ mysqldump -uxxx -pxxx -hxxx heroku_xxx | mysql -uroot DATABASENAME
 	```
 
 2. Migrate database URLs
