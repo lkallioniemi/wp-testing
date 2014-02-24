@@ -366,6 +366,8 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	* Open Backups & Jobs tab
 	* Click "Create a backup now"
 
+	Then make the actual dump:
+
 	```sh
 	$ heroku config:get CLEARDB_DATABASE_URL
 	$ mysqldump -uroot DATABASENAME | mysql -uxxx -pxxx -hxxx heroku_xxx ## see config above
