@@ -171,7 +171,7 @@ Define your environment variables in a file called `.env` (this will be ignored 
 In every terminal used to run the server, run:
 
 ```sh
-export `cat .env`
+$ export `cat .env`
 ```
 
 ## <a name="heroku-setup"></a>HEROKU SETUP
