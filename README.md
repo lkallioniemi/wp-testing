@@ -408,12 +408,16 @@ Create a new project, [see above][create-new-project].
 
 You will need to get access to the old server in order to be able to access the database.
 
-	$ mysqldump -uxxx -pyyy DATABASENAME >~/DATABASENAME.sql
+```sh
+$ mysqldump -uxxx -pyyy DATABASENAME >~/DATABASENAME.sql
+```
 
 #### Import to localhost (at the `localhost`)
 
-	$ scp HOSTNAME:DATABASENAME.sql /tmp/
-	$ mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
+```sh
+$ scp HOSTNAME:DATABASENAME.sql /tmp/
+$ mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
+```
 
 #### Alternative way
 
@@ -454,15 +458,15 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 2. Start [Search Replace DB][search-replace-db] and open <http://localhost:5999/>
 3. Run MySQL command:
 
-	```mysql
-	mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
+	```sh
+	$ mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
 	```
 
 4. Replace `localhost:5000/wp-content/uploads` with `BUCKETNAME/BUCKETPATH/staging`
 5. Remove uploads from local storage and verify that all images, attachments etc. work correctly.
 
 	```sh
-	rm -rf config/public/wp-content/uploads
+	$ rm -rf config/public/wp-content/uploads
 	```
 
 [getting-started]:#getting-started
