@@ -154,6 +154,12 @@ $ git push -u origin master
 
 ## <a name="local-setup"></a>INITIAL LOCAL SETUP
 
+### Install WordPress to config/public/wordpress directory
+
+```sh
+curl http://wordpress.org/latest.tar.gz | tar xz -C config/public
+```
+
 ### <a name="create-db"></a>Create a local MySQL database
 
 ```sh
