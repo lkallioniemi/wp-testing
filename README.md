@@ -5,13 +5,15 @@ wordpress-on-heroku
 
 * [Getting started][getting-started]
 	* [Project structure][project-structure]
-	* [Installation][installation]
-	* [Normal workflow][normal-workflow]
+	* [Pre-installed plugins][wordpress-plugins]
 * [Prerequisites][prerequisites]
 	* [Brew modules][brew-modules] (PHP, MEMCACHED, MYSQL)
 	* [Heroku Toolbelt][install-heroku]
 	* [Github repo][github-repo]
 	* [Amazon S3 Bucket][amazon-s3-bucket]
+* [Workflow][workflow]
+	* [Installation][workflow-installation]
+	* [Normal development cycle][workflow-development]
 * [Creating a new project][create-new-project]
 * [Initial local setup][local-setup]
 	* [Create a local MySQL Database][create-db]
@@ -22,6 +24,7 @@ wordpress-on-heroku
 * [Setting up WordPress][wp-setup]
 	* [Configuration][wp-config] (wp-config.php)
 	* [Localization][wp-lang]
+	* [Plugins][wordpress-plugins]
 	* [Linking to existing Heroku app][link-to-existing-heroku-app]
 	* [Pushing to Heroku][deploy-heroku] (master)
 	* [Pushing to staging enviroment][deploy-staging] (staging)
@@ -55,26 +58,15 @@ wordpress-on-heroku
 └── README.md
 ```
 
-### Installation:
+### <a name="wordpress-plugins"></a>Pre-installed plugins
 
-1. Clone the repository for local development
-2. Remove `.git`
-3. Create and initialize new Github repositry
-4. Create a new Amazon S3 Bucket
-5. Create a local database
-3. Set everything up on localhost, commit, and [push to Github][deploy-github]
-4. [Export local database to Heroku][export-local-db]
-4. Push to [master][deploy-heroku] and [staging][deploy-staging]
+The repository comes bundled with the following WordPress plugins:
 
-See [creating a new project][create-new-project] for details.
-
-### Normal development cycle:
-
-1. Clone the repository for local development
-2. [Import database][import-heroku-db] from Heroku to localhost
-3. Develop on localhost, commit, and [push to Github][deploy-github]
-4. Next you want to check that everything is working by [pushing to the staging environment][deploy-staging]
-5. If everything is ok, [push to master][deploy-heroku]
+* Akismet : <http://wordpress.org/plugins/akismet/>               # Spam prevention
+* Batcache : <http://wordpress.org/plugins/batcache/>             # Page caching (uses MemCachier)
+* CloudFlare : <http://wordpress.org/plugins/cloudflare/>         # Speeds things up
+* MemCachier : <http://wordpress.org/extend/plugins/memcached/>   # WordPress object cache
+* WP Read-Only : <http://wordpress.org/plugins/wpro/>             # Stores files on Amazon S3
 
 ## <a name="prerequisites"></a>PREREQUISITES
 
@@ -126,6 +118,30 @@ Create a new repository for this project on [Github][github-frc]. If you don't h
 You will also need to create an [Amazon S3 Bucket][amazon-s3-console] and get a separate **S3 client**. If you don't have sufficent priviledges to access the S3 Bucket, you know who to ask.
 
 The client will be used to transfer over files and make sure WordPress is set up correctly. We recommend using [Transmit](http://www.panic.com/transmit/), unless you prefer using the browser. You will need the *AWS key*, *secret* and *bucket name*.
+
+## <a name="workflow"></a>WORKFLOW
+
+### <a name="workflow-installation"></a>Installation:
+
+1. Clone the repository
+2. Remove `.git`
+3. Create and initialize new Github repositry
+4. Create a new Amazon S3 Bucket
+5. Create a local database
+5. Set everything up on localhost (incl. theme), commit, and [push to Github][deploy-github]
+6. [Export local database to Heroku][export-local-db]
+7. Push to [master][deploy-heroku] and [staging][deploy-staging]
+
+See [creating a new project][create-new-project] for details.
+
+### <a name="workflow-development"></a>Normal development cycle:
+
+1. Clone the repository for local development
+2. [Import database][import-heroku-db] from Heroku to localhost
+3. <a href="#search-replace-db">Search & replace</a> `HEROKUALLURL` with `localhost:5000`
+3. Develop on localhost, commit, and [push to Github][deploy-github]
+4. Push to staging [pushing to the staging environment][deploy-staging] and check that everything is ok
+5. [Push to master][deploy-heroku]
 
 ## <a name="create-new-project"></a>CREATING A NEW PROJECT
 
@@ -366,7 +382,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 	If there's content in CLEARDB database, take a backup:
 	* Go to <https://dashboard.heroku.com/orgs/frc/apps>
-	* Click your APPNAME
+	* Click your `APPNAME`
 	* Click "ClearDB MySQL Database"
 	* Click the correct database (check from heroku config)
 	* Open Backups & Jobs tab
@@ -485,8 +501,10 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 
 [getting-started]:#getting-started
 [project-structure]:#project-structure
-[installation]:#installation-steps
-[normal-workflow]:#normal-workflow
+[wordpress-plugins]:#wordpress-plugins
+[workflow]:#workflow
+[workflow-installation]:#workflow-installation
+[workflow-development]:#workflow-development
 [prerequisites]:#prerequisites
 [amazon-s3-bucket]:#amazon-s3-bucket
 [brew-modules]:#brew-modules
