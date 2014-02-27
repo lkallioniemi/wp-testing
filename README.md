@@ -24,7 +24,6 @@ wordpress-on-heroku
 * [Setting up WordPress][wp-setup]
 	* [Configuration][wp-config] (wp-config.php)
 	* [Localization][wp-lang]
-	* [Plugins][wordpress-plugins]
 	* [Linking to existing Heroku app][link-to-existing-heroku-app]
 	* [Pushing to Heroku][deploy-heroku] (master)
 	* [Pushing to staging enviroment][deploy-staging] (staging)
