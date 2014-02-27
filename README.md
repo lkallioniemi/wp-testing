@@ -63,7 +63,6 @@ The repository comes bundled with the following WordPress plugins:
 
 * Akismet : <http://wordpress.org/plugins/akismet/>               # Spam prevention
 * Batcache : <http://wordpress.org/plugins/batcache/>             # Page caching (uses MemCachier)
-* CloudFlare : <http://wordpress.org/plugins/cloudflare/>         # Speeds things up
 * MemCachier : <http://wordpress.org/extend/plugins/memcached/>   # WordPress object cache
 * WP Read-Only : <http://wordpress.org/plugins/wpro/>             # Stores files on Amazon S3
 
@@ -404,7 +403,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	```sh
 	$ heroku info
 	```
-	
+
 3. Flush the `memcached`
 
 	```sh
