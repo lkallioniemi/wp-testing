@@ -200,8 +200,9 @@ Make sure you [installed everything you need][install-heroku] before you proceed
 
 ### <a name="create-heroku-app"></a>Create a new heroku app (production)
 
+APPNAME should be the site name written together, lowercase and without "www". For example, www.example.com should be examplecom.
 ```sh
-$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
+$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress APPNAME
 ```
 
 Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
@@ -211,7 +212,7 @@ Check the settings and make sure all the addons were installed by the buildpack.
 Example to add them manually from the command line:
 
 ```sh
-$ heroku addons:add cleardb:ignite --app PROJECTNAME
+$ heroku addons:add cleardb:ignite --app APPNAME
 ```
 
 For a full list of the recommended basic addons, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
@@ -221,7 +222,7 @@ For a full list of the recommended basic addons, see <https://github.com/frc/her
 ### <a name="create-staging-app"></a>Create a new heroku app (staging)
 
 ```sh
-$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME-staging
+$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress APPNAME-staging
 ```
 
 Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
@@ -235,8 +236,8 @@ You will need to check the addons again and make sure everything is there. If th
 Set the WordPress directory for both master and staging:
 
 ```sh
-$ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME
-$ heroku config:set WORDPRESS_DIR=wordpress --app PROJECTNAME-staging
+$ heroku config:set WORDPRESS_DIR=wordpress --app APPNAME
+$ heroku config:set WORDPRESS_DIR=wordpress --app APPNAME-staging
 ```
 
 WordPress will be unpacked to this location everytime you push to Heroku. By having it in a separate directory - as opposed to unpacking it to  `config/public/` - we avoid any possible conflicts with our own files.
@@ -244,8 +245,8 @@ WordPress will be unpacked to this location everytime you push to Heroku. By hav
 Set the environment variables:
 
 ```sh
-$ heroku labs:enable user-env-compile --app PROJECTNAME
-$ heroku labs:enable user-env-compile --app PROJECTNAME-staging
+$ heroku labs:enable user-env-compile --app APPNAME
+$ heroku labs:enable user-env-compile --app APPNAME-staging
 ```
 
 ### <a name="wp-config"></a>wp-config.php
@@ -272,7 +273,7 @@ You will also need to define the language in the `config/public/wp-config.php` f
 If your site is already running on Heroku, you can set the remote and start pushing there:
 
 ```sh
-$ git remote set-url heroku git@heroku.com:PROJECTNAME.git
+$ git remote set-url heroku git@heroku.com:APPNAME.git
 $ git push heroku master
 ```
 
@@ -334,7 +335,7 @@ User policy:
 		{
 			"Effect": "Allow",
 			"Action": "s3:*",
-			"Resource": "arn:aws:s3:::BUCKETNAME/PROJECTNAME/*"
+			"Resource": "arn:aws:s3:::BUCKETNAME/APPNAME/*"
 		}
 	]
 }
@@ -342,7 +343,7 @@ User policy:
 
 #### <a name="amazon-settings"></a> Configure (Settings / WPRO Settings):
 
-* Prepend all paths with folder: PROJECTNAME/staging
+* Prepend all paths with folder: APPNAME/staging
 * AWS Key & AWS Secret: Get these from the [console][amazon-s3-bucket]
 * S3 Bucket: BUCKETNAME
 * [x] Virtual hosting is enabled for this bucket.
@@ -352,7 +353,7 @@ Test by uploading new media, and make sure the URL contains `BUCKETNAME`
 
 ### <a name="copy-existing-assets"></a>Upload pre-existing content
 
-Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/PROJECTNAME/`
+Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/APPNAME/`
 
 ## <a name="db-management"></a>DATABASE MANAGEMENT
 
@@ -482,7 +483,7 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 
 #### <a name="transfer-assets-to-s3"></a>Transfer assets to S3 Bucket
 
-1. Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/PROJECTNAME/staging` directory. See [Amazon S3 Setup][amazon-setup] for information on how to upload media assets to the bucket.
+1. Copy all files from `wp-content/uploads` to the `S3 BUCKETNAME/APPNAME/staging` directory. See [Amazon S3 Setup][amazon-setup] for information on how to upload media assets to the bucket.
 2. Start [Search Replace DB][search-replace-db] and open <http://localhost:5999/>
 3. Run MySQL command:
 
