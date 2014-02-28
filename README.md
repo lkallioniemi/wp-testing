@@ -219,6 +219,8 @@ For a full list of the recommended basic addons, see <https://github.com/frc/her
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
+Set Papertrail to ignore status=200 requests so that it doesn't fill up. This is in [Heroku Dashboard](https://dashboard.heroku.com/) -> APP -> Resources -> Papertrail -> "Filter Unnecessary Logs".
+
 ### <a name="create-staging-app"></a>Create a new heroku app (staging)
 
 ```sh
