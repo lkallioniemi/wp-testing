@@ -198,7 +198,7 @@ $ export `cat .env`
 
 Make sure you [installed everything you need][install-heroku] before you proceed.
 
-### <a name="create-heroku-app"></a>Create a new heroku app (master)
+### <a name="create-heroku-app"></a>Create a new heroku app (production)
 
 ```sh
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress PROJECTNAME
@@ -206,7 +206,7 @@ $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-
 
 Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
-Check the settings and make sure all the addons are installed. If not, you will have to add them manually.
+Check the settings and make sure all the addons were installed by the buildpack. If not, you will have to add them manually.
 
 Example to add them manually from the command line:
 
@@ -214,7 +214,7 @@ Example to add them manually from the command line:
 $ heroku addons:add cleardb:ignite --app PROJECTNAME
 ```
 
-For a full list of the required addons, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
+For a full list of the recommended basic addons, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
