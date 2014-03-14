@@ -99,8 +99,8 @@ define('DB_COLLATE', 'utf8_swedish_ci');
 define('WP_CACHE', getenv('WP_CACHE') == 'true');
 
 /**
-	Enable WordPress udpates
-*/
+ *	Enable WordPress udpates
+ */
 define('FS_METHOD', 'direct');
 
 /**
@@ -112,6 +112,12 @@ define('DISABLE_WP_CRON', getenv('DISABLE_WP_CRON') == 'true');
  * Disable automatic updates, they won't survive restarting and scaling dynos
  */
 define('AUTOMATIC_UPDATER_DISABLED', true);
+
+/**
+ * Disable file editing from the admin view. In case a malicious hacker gets in the admin,
+ * at least they won't be able to edit the php files.
+ */
+define('DISALLOW_FILE_EDIT', true);
 
 /* That's all, stop editing! Happy blogging. */
 
