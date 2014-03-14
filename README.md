@@ -348,7 +348,7 @@ User policy:
 * Prepend all paths with folder: APPNAME/staging
 * AWS Key & AWS Secret: Get these from the [console][amazon-s3-bucket]
 * S3 Bucket: BUCKETNAME
-* [x] Virtual hosting is enabled for this bucket.
+* [ ] Virtual hosting is enabled for this bucket.
 * Bucket AWS Region: EU (Ireland) Region
 
 Test by uploading new media, and make sure the URL contains `BUCKETNAME`
