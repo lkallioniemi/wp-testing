@@ -24,6 +24,7 @@ wordpress-on-heroku
 * [Setting up WordPress][wp-setup]
 	* [Configuration][wp-config] (wp-config.php)
 	* [Localization][wp-lang]
+	* [Install a theme][wordpress-theme]
 	* [Linking to existing Heroku app][link-to-existing-heroku-app]
 	* [Pushing to Heroku][deploy-heroku] (master)
 	* [Pushing to staging enviroment][deploy-staging] (staging)
@@ -126,9 +127,10 @@ The client will be used to transfer over files and make sure WordPress is set up
 3. Create and initialize new Github repositry
 4. Create a new Amazon S3 Bucket
 5. Create a local database
-5. Set everything up on localhost (incl. theme), commit, and [push to Github][deploy-github]
-6. [Export local database to Heroku][export-local-db]
-7. Push to [master][deploy-heroku] and [staging][deploy-staging]
+6. [Install a theme][wordpress-theme]
+7. Set everything up on localhost, commit, and [push to Github][deploy-github]
+8. [Export local database to Heroku][export-local-db]
+9. Push to [master][deploy-heroku] and [staging][deploy-staging]
 
 See [creating a new project][create-new-project] for details.
 
@@ -269,6 +271,13 @@ $ heroku config:add WORDPRESS_LANGUAGE=fi
 You will also need to define the language in the `config/public/wp-config.php` file:
 
 	define('WPLANG', 'fi');
+
+### <a name="wordpress-theme"></a>Install a theme
+
+Frantic has its own [WordPress theme][frantic-wp-theme] located in another repository. If you choose to use this theme, clone it to your `config/public/wp-content/themes/` folder and do the following:
+
+* Remove the `.git` folder from the theme to avoid pushing to the wrong repository
+* Remove `.gitignore` from the theme folder and use the one in the root folder instead.
 
 ### <a name="link-to-existing-heroku-app"></a>Linking to an existing Heroku app
 
@@ -506,6 +515,8 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 [workflow]:#workflow
 [workflow-installation]:#workflow-installation
 [workflow-development]:#workflow-development
+[wordpress-theme]:#wordpress-theme
+[frantic-wp-theme]:https://github.com/frc/Frantic-WP-theme
 [prerequisites]:#prerequisites
 [amazon-s3-bucket]:#amazon-s3-bucket
 [brew-modules]:#brew-modules
