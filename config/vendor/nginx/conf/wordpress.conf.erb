@@ -42,6 +42,9 @@ server {
     allow           all;
     log_not_found   off;
     access_log      off;
+    if ($host ~* herokuapp\.com$) {
+      rewrite  ^(.*)$  /herokuapp-robots.txt  break;
+    }
   }
 
   # # Disable php-fpm /status.html

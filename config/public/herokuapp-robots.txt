@@ -1,0 +1,3 @@
+# herokuapp-robots.txt
+User-agent: *
+Disallow: /
