@@ -233,6 +233,8 @@ Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing th
 
 You will need to check the addons again and make sure everything is there. If they didn't show up, see the instructions above on how to add them manually.
 
+If you're setting up a new site, having a separate staging environment might be more trouble than it's worth.
+
 **Note**: Since this is a staging environment, the database should be set to `ignite` to avoid any unnecessary costs.
 
 ## <a name="wp-setup"></a>SETTING UP WORDPRESS
@@ -240,11 +242,11 @@ You will need to check the addons again and make sure everything is there. If th
 Set the WordPress directory for both master and staging:
 
 ```sh
-$ heroku config:set WORDPRESS_DIR=wordpress --app APPNAME
-$ heroku config:set WORDPRESS_DIR=wordpress --app APPNAME-staging
+$ heroku config:set BUILDPACK_WORDPRESS_DIR=wordpress --app APPNAME
+$ heroku config:set BUILDPACK_WORDPRESS_DIR=wordpress --app APPNAME-staging
 ```
 
-WordPress will be unpacked to this location everytime you push to Heroku. By having it in a separate directory - as opposed to unpacking it to  `config/public/` - we avoid any possible conflicts with our own files.
+WordPress will be unpacked to this location every time you push to Heroku. By having it in a separate directory - as opposed to unpacking it to  `config/public/` - we avoid any possible conflicts with our own files.
 
 Set the environment variables:
 
