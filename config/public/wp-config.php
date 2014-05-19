@@ -104,6 +104,11 @@ define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
  */
 define( 'AUTOMATIC_UPDATER_DISABLED', true );
 
+/**
+ * Use Direct File I/O from within PHP for WordPress Upgrades
+ */
+define('FS_METHOD', 'direct');
+
 /* That"s all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
