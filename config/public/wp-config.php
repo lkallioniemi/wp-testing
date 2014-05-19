@@ -101,6 +101,11 @@ define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
 define( 'AUTOMATIC_UPDATER_DISABLED', true );
 
 /**
+ * Disable file editing from the admin view.
+ */
+define('DISALLOW_FILE_EDIT', true);
+
+/**
  * Use Direct File I/O from within PHP for WordPress Upgrades
  */
 define('FS_METHOD', 'direct');
