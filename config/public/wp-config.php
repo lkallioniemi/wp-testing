@@ -34,7 +34,8 @@ $hosturl = ( $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://' ) . $_SERVER['HT
 define( 'WP_HOME',        "$hosturl");
 define( 'WP_SITEURL',     "$hosturl/wordpress");
 define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
-define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
+$docroot = ( $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : '/app/public/' );
+define( 'WP_CONTENT_DIR', "$docroot/wp-content" );
 
 /**#@+
  * Authentication Unique Keys and Salts.
