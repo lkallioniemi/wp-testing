@@ -23,6 +23,7 @@ define("DB_PASSWORD", trim($url["pass"]));
 define("DB_HOST", trim($url["host"]));
 // define("DB_PORT", trim($url["port"]));
 define("DB_CHARSET", "utf8");
+define("DB_COLLATE", "utf8_swedish_ci");
 
 define("FORCE_SSL_LOGIN", getenv("FORCE_SSL_LOGIN") == "true");
 define("FORCE_SSL_ADMIN", getenv("FORCE_SSL_ADMIN") == "true");
@@ -34,9 +35,6 @@ define( 'WP_HOME',        "$hosturl");
 define( 'WP_SITEURL',     "$hosturl/wordpress");
 define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
 define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
-
-/** The Database Collate type. Don't change this if in doubt. */
-define("DB_COLLATE", "utf8_swedish_ci");
 
 /**#@+
  * Authentication Unique Keys and Salts.
