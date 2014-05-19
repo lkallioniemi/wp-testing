@@ -34,7 +34,7 @@ if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https") $_SERVER["HTTPS"] = "on";
 if ($_SERVER['SERVER_PORT'] == '443') $_SERVER["HTTPS"] = "on";
 
 $hosturl = ( $_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-// define( 'WP_HOME',        "$hosturl");
+define( 'WP_HOME',        "$hosturl");
 define( 'WP_SITEURL',     "$hosturl/wordpress");
 define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
 define( 'WP_CONTENT_DIR', $_SERVER['DOCUMENT_ROOT'].'/wp-content' );
