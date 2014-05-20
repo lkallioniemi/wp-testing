@@ -207,7 +207,7 @@ APPNAME should be the site name written together, lowercase and without "www". F
 $ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress APPNAME
 ```
 
-Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
+Transfer the app's ownership from your *personal account* to *frc* on [Heroku](https://www.heroku.com/) or join the app by accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
 Check the settings and make sure all the addons were installed by the buildpack. If not, you will have to add them manually.
 
