@@ -44,16 +44,16 @@ wordpress-on-heroku
 
 ```
 ├── config
-│   ├── public                            # WordPress files are stored here
+│   ├── public                     # WordPress files are stored here
 │   │   └── wp-content
 │   │     ├── plugins
 │   │     └── themes
-│   └── vendor                            # Config files for vendored apps
+│   └── vendor                     # Config files for vendored apps
 │      ├── nginx
-│      │   └── conf                       # nginx.conf + wordpress.conf.erb
-│      └── php                            # php.ini
-│          ├── Search-Replace-DB-master   # localhost:5999
-│          └── etc                        # php-fpm.conf
+│      │   └── conf                # nginx.conf + wordpress.conf.erb
+│      ├── php                     # php.ini
+│      │   └── etc                 # php-fpm.conf
+│      └── Search-Replace-DB       # localhost:5999
 ├── .gitignore
 └── README.md
 ```
@@ -376,13 +376,15 @@ This script was made to aid the process of migrating PHP and MySQL based website
 
 Source: <https://github.com/interconnectit/Search-Replace-DB/>
 
-Project location: `config/vendor/php`
+Location: `config/vendor/Search-Replace-DB/`
 
 #### Usage
 
-Go to `config/vendor/php/Search-Replace-DB-master/` and start the server:
+Start the server from the root folder:
 
-	$ php -S localhost:5999 -t .
+```sh
+$ php -S localhost:5999 -t config/vendor/Search-Replace-DB/
+```
 
 Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry run` button to do a test run without searching/replacing.
 
