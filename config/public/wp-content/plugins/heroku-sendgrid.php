@@ -40,15 +40,24 @@ function change_mail_from_name($wp_mail_from_name)
   return "$display_name from $blogname";
 }
 
+/* In the case where wpcf7 is called, depend on those settings instead. */
 add_filter('wpcf7_mail_components', 'send_from_wpcf7');
 
 function send_from_wpcf7($components) {
-  // In the case where wpcf7 is called,
-  // depend on those settings instead.
   remove_filter('wp_mail_from', 'change_mail_from');
   remove_filter('wp_mail_from_name', 'change_mail_from_name');
 
   return $components;
+}
+
+/* In the case where gforms is called, depend on those settings instead. */
+add_filter('gform_notification', 'send_from_gforms', 10, 3);
+
+function send_from_gforms($notification, $form, $entry) {
+  remove_filter('wp_mail_from', 'change_mail_from');
+  remove_filter('wp_mail_from_name', 'change_mail_from_name');
+  
+  return $notification;
 }
 
 ?>
