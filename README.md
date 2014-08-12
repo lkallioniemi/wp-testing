@@ -165,10 +165,10 @@ $ git push -u origin master
 
 ## <a name="local-setup"></a>INITIAL LOCAL SETUP
 
-### Install WordPress to config/public/wordpress directory
+### Install WordPress to public/wordpress directory
 
 ```sh
-$ curl http://wordpress.org/latest.tar.gz | tar xz -C config/public
+$ curl http://wordpress.org/latest.tar.gz | tar xz -C public
 ```
 
 ### <a name="create-db"></a>Create a local MySQL database
@@ -199,79 +199,61 @@ Make sure you [installed everything you need][install-heroku] before you proceed
 
 APPNAME should be the site name written together, lowercase and without "www". For example, www.example.com should be examplecom.
 ```sh
-$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress APPNAME
+heroku create --region eu APPNAME
 ```
 
 Transfer the app's ownership from your *personal account* to *frc* on [Heroku](https://www.heroku.com/) or join the app by accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
-Check the settings and make sure all the addons were installed by the buildpack. If not, you will have to add them manually.
-
-Example to add them manually from the command line:
-
 ```sh
-$ heroku addons:add cleardb:ignite --app APPNAME
+cd APPNAME
+heroku addons:add cleardb:ignite
+heroku addons:add sendgrid:starter
+heroku addons:add memcachier:dev
+heroku addons:add scheduler:standard
+heroku addons:add papertrail:choklad
 ```
-
-For a full list of the recommended basic addons, see <https://github.com/frc/heroku-buildpack-wordpress/blob/master/bin/release>
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
-Set Papertrail to ignore status=200 requests so that it doesn't fill up. This is in [Heroku Dashboard](https://dashboard.heroku.com/) -> APP -> Resources -> Papertrail -> "Filter Unnecessary Logs".
+### Ignore useless log entries
+
+Set Papertrail to ignore
+```
+(HTTP\/1\.1\" |status=)(200|304)
+```
+so that it doesn't fill up. This is in [Heroku Dashboard](https://dashboard.heroku.com/) -> APP -> Resources -> Papertrail -> "Filter Unnecessary Logs".
 
 ### <a name="create-staging-app"></a>Create a new heroku app (staging)
 
 ```sh
-$ heroku create --region eu --buildpack https://github.com/frc/heroku-buildpack-wordpress APPNAME-staging
+$ heroku create --region eu --buildpack APPNAME-staging
 ```
 
 Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
-
-You will need to check the addons again and make sure everything is there. If they didn't show up, see the instructions above on how to add them manually.
-
-If you're setting up a new site, having a separate staging environment might be more trouble than it's worth.
+Add similar addons as for production, if needed.
 
 **Note**: Since this is a staging environment, the database should be set to `ignite` to avoid any unnecessary costs.
 
 ## <a name="wp-setup"></a>SETTING UP WORDPRESS
 
-Set the WordPress directory for both master and staging:
-
-```sh
-$ heroku config:set BUILDPACK_WORDPRESS_DIR=wordpress --app APPNAME
-$ heroku config:set BUILDPACK_WORDPRESS_DIR=wordpress --app APPNAME-staging
-```
-
-WordPress will be unpacked to this location every time you push to Heroku. By having it in a separate directory - as opposed to unpacking it to  `config/public/` - we avoid any possible conflicts with our own files.
-
-Set the environment variables:
-
-```sh
-$ heroku labs:enable user-env-compile --app APPNAME
-$ heroku labs:enable user-env-compile --app APPNAME-staging
-```
+WordPress will be unpacked to location "public/wordpress" every time you push to Heroku. By having it in a separate directory - as opposed to unpacking it to `public/` - we avoid any possible conflicts with our own files.
 
 ### <a name="wp-config"></a>wp-config.php
 
-Go to `config/public` and edit the `wp-config.php` file:
+Go to `public` and edit the `wp-config.php` file:
 
 * Generate new Authentication Unique keys and Salts
 * Define a new Database Table prefix
 
 ### <a name="wp-lang"></a>Localization
 
-To specify a different WordPress language (for example Finnish), type:
-
-```sh
-$ heroku config:add WORDPRESS_LANGUAGE=fi
-```
-
-You will also need to define the language in the `config/public/wp-config.php` file:
+To specify a different WordPress language (for example Finnish), simply define the language in the `public/wp-config.php` file:
 
 	define('WPLANG', 'fi');
 
 ### <a name="wordpress-theme"></a>Install a theme
 
-Frantic has its own [WordPress theme][frantic-wp-theme] located in another repository. If you choose to use this theme, clone it to your `config/public/wp-content/themes/` folder and do the following:
+Frantic has its own [WordPress theme][frantic-wp-theme] located in another repository. If you choose to use this theme, clone it to your `public/wp-content/themes/` folder and do the following:
 
 * Remove the `.git` folder from the theme to avoid pushing to the wrong repository
 * Remove `.gitignore` from the theme folder and use the one in the root folder instead.
@@ -322,12 +304,12 @@ $ git push dev master
 Start the local WordPress server (from the root directory):
 
 ```sh
-$ php -S localhost:5000 -t config/public
+$ php -S localhost:5000 -t public
 ```
 
 Check <http://localhost:5000/> and perform the basic installation for WordPress.
 
-Save the *admin username* and *password* as a comment in `config/public/wp-config.php` and activate all necessary plugins.
+Save the *admin username* and *password* as a comment in `public/wp-config.php` and activate all necessary plugins.
 
 ### <a name="amazon-setup"></a>Amazon S3 Setup
 
@@ -371,14 +353,14 @@ This script was made to aid the process of migrating PHP and MySQL based website
 
 Source: <https://github.com/interconnectit/Search-Replace-DB/>
 
-Location: `config/vendor/Search-Replace-DB/`
+Location: `util/Search-Replace-DB/`
 
 #### Usage
 
 Start the server from the root folder:
 
 ```sh
-$ php -S localhost:5999 -t config/vendor/Search-Replace-DB/
+$ php -S localhost:5999 -t util/Search-Replace-DB/
 ```
 
 Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry run` button to do a test run without searching/replacing.
@@ -478,13 +460,13 @@ You can also use an Mac OS app like [Sequel](http://www.sequelpro.com/) to save 
 #### Transfer media assets to your local installation
 
 ```sh
-$ scp -r HOSTNAME:/PATHTOWPISNTALLATION/wp-content/uploads config/public/wp-content/
+$ scp -r HOSTNAME:/PATHTOWPISNTALLATION/wp-content/uploads public/wp-content/
 ```
 
 #### Start the local WordPress server (from the root directory)
 
 ```sh
-$ php -S localhost:5000 -t config/public
+$ php -S localhost:5000 -t public
 ```
 
 Check that everything is ok <http://localhost:5000/wp-admin/>
@@ -505,7 +487,7 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 5. Remove uploads from local storage and verify that all images, attachments etc. work correctly.
 
 	```sh
-	$ rm -rf config/public/wp-content/uploads
+	$ rm -rf public/wp-content/uploads
 	```
 
 [getting-started]:#getting-started
