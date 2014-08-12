@@ -1,0 +1,9 @@
+{
+    "require": {
+        "ext-memcached": "*",
+         "johnpbloch/wordpress": "*"
+    },
+    "extra": {
+        "wordpress-install-dir": "public/wordpress"
+    }
+}

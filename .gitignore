@@ -1,3 +1,6 @@
 *~
 .DS_Store
-config/public/wordpress/*
+node_modules
+npm-debug.log
+.sass-cache
+/public/wordpress/*
