@@ -69,7 +69,7 @@ The repository comes bundled with the following WordPress plugins:
 Use brew install to install the following modules:
 
 ```sh
-$ brew install php55 php55-memcache memcached mysql libevent
+$ brew install php55 php55-memcache memcached mysql libevent libmemcached
 ```
 See <https://github.com/josegonzalez/homebrew-php> for more information on how to install these with brew.
 
@@ -94,6 +94,22 @@ Or, if you don't want/need `launchctl`, you can just run:
 ```sh
 /usr/local/opt/memcached/bin/memcached
 ```
+
+### Compiling memcached for php
+```
+pecl download memcached
+open memcached-2.1.0.tgz
+cd memcached-2.1.0/memcached-2.1.0
+phpize
+./configure
+make
+sudo make install
+```
+Then add
+```
+extension = memcached.so
+```
+to php.ini. Use `php --ini` to locate your php.ini file.
 
 #### MySQL
 
