@@ -43,17 +43,12 @@ wordpress-on-heroku
 ### <a name="project-structure"></a>Project structure
 
 ```
-├── config
-│   ├── public                     # WordPress files are stored here
-│   │   └── wp-content
-│   │     ├── plugins
-│   │     └── themes
-│   └── vendor                     # Config files for vendored apps
-│      ├── nginx
-│      │   └── conf                # nginx.conf + wordpress.conf.erb
-│      ├── php                     # php.ini
-│      │   └── etc                 # php-fpm.conf
-│      └── Search-Replace-DB       # localhost:5999
+├── public                     # WordPress files are stored here
+│   └── wp-content
+│     ├── plugins
+│     └── themes
+├── util                       # Utils
+    └── Search-Replace-DB       # localhost:5999
 ├── .gitignore
 └── README.md
 ```
