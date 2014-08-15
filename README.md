@@ -80,30 +80,30 @@ When the installation is done, start memcached and mysql as instructed. If you a
 To have launchd start `memcached` at login:
 
 ```sh
-ln -sfv /usr/local/opt/memcached/*.plist ~/Library/LaunchAgents
+$ ln -sfv /usr/local/opt/memcached/*.plist ~/Library/LaunchAgents
 ```
 
 Then to load `memcached` now:
 
 ```sh
-launchctl load ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+$ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
 ```
 
 Or, if you don't want/need `launchctl`, you can just run:
 
 ```sh
-/usr/local/opt/memcached/bin/memcached
+$ /usr/local/opt/memcached/bin/memcached
 ```
 
 ### Compiling memcached for php
 ```
-pecl download memcached
-open memcached-2.1.0.tgz
-cd memcached-2.1.0/memcached-2.1.0
-phpize
-./configure
-make
-sudo make install
+$ pecl download memcached
+$ open memcached-2.1.0.tgz
+$ cd memcached-2.1.0/memcached-2.1.0
+$ phpize
+$ ./configure
+$ make
+$ sudo make install
 ```
 Then add
 ```
@@ -215,18 +215,18 @@ Make sure you [installed everything you need][install-heroku] before you proceed
 
 APPNAME should be the site name written together, lowercase and without "www". For example, www.example.com should be examplecom.
 ```sh
-heroku create --region eu APPNAME
+$ heroku create --region eu APPNAME
 ```
 
 Transfer the app's ownership from your *personal account* to *frc* on [Heroku](https://www.heroku.com/) or join the app by accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
 ```sh
-cd APPNAME
-heroku addons:add cleardb:ignite
-heroku addons:add sendgrid:starter
-heroku addons:add memcachier:dev
-heroku addons:add scheduler:standard
-heroku addons:add papertrail:choklad
+$ cd APPNAME
+$ heroku addons:add cleardb:ignite
+$ heroku addons:add sendgrid:starter
+$ heroku addons:add memcachier:dev
+$ heroku addons:add scheduler:standard
+$ heroku addons:add papertrail:choklad
 ```
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
@@ -398,7 +398,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	Then make the actual dump:
 
 	```sh
-	$ heroku config:get CLEARDB_DATABASE_URL
+	$ heroku config:get CLEARDB_DATABASE_URL
 	$ mysqldump -uroot DATABASENAME | mysql -uxxx -pxxx -hxxx heroku_xxx ## see config above
 	```
 
@@ -416,7 +416,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 3. Flush the `memcached`
 
 	```sh
-	$ heroku addons:open memcachier
+	$ heroku addons:open memcachier
 	```
 
 ### <a name="import-heroku-db"></a>Import database from Heroku
@@ -496,14 +496,14 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 3. Run MySQL command:
 
 	```sh
-	$ mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
+	$ mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
 	```
 
 4. Replace `localhost:5000/wp-content/uploads` with `BUCKETNAME/BUCKETPATH/staging`
 5. Remove uploads from local storage and verify that all images, attachments etc. work correctly.
 
 	```sh
-	$ rm -rf public/wp-content/uploads
+	$ rm -rf public/wp-content/uploads
 	```
 
 [getting-started]:#getting-started
