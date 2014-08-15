@@ -1,6 +1,46 @@
+### General ###
 *~
-.DS_Store
-node_modules
-npm-debug.log
-.sass-cache
+*.log
+*.env
+
+# Heroku
 /public/wordpress/*
+/vendor/
+
+### CodeKit ###
+codekit-config.json
+
+# Grunt
+node_modules
+
+### OS generated files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+### Sass ###
+.sass-cache
+
+### SublimeText ###
+*.sublime-project
+*.sublime-workspace
+
+### WordPress ###
+/public/wordpress/
+/public/wp-content/uploads/
+/public/wp-content/cache/
+/public/wp-content/backups/
+/public/wp-content/backup-db/
+/public/wp-content/blogs.dir/
+/public/wp-content/upgrade/
+sitemap.xml
+sitemap.xml.gz
+
+### Query Monitor Plugin (only for local dev) ###
+/public/wp-content/db.php
+/public/wp-content/plugins/query-monitor/
