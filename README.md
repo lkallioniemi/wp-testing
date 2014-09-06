@@ -69,7 +69,7 @@ The repository comes bundled with the following WordPress plugins:
 Use brew install to install the following modules:
 
 ```sh
-$ brew install php55 php55-memcache memcached mysql libevent libmemcached
+brew install php55 php55-memcache memcached mysql libevent libmemcached
 ```
 See <https://github.com/josegonzalez/homebrew-php> for more information on how to install these with brew.
 
@@ -80,30 +80,30 @@ When the installation is done, start memcached and mysql as instructed. If you a
 To have launchd start `memcached` at login:
 
 ```sh
-$ ln -sfv /usr/local/opt/memcached/*.plist ~/Library/LaunchAgents
+ln -sfv /usr/local/opt/memcached/*.plist ~/Library/LaunchAgents
 ```
 
 Then to load `memcached` now:
 
 ```sh
-$ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
 ```
 
 Or, if you don't want/need `launchctl`, you can just run:
 
 ```sh
-$ /usr/local/opt/memcached/bin/memcached
+/usr/local/opt/memcached/bin/memcached
 ```
 
 ### Compiling memcached for php
-```
-$ pecl download memcached
-$ open memcached-2.1.0.tgz
-$ cd memcached-2.1.0/memcached-2.1.0
-$ phpize
-$ ./configure
-$ make
-$ sudo make install
+```sh
+pecl download memcached
+open memcached-2.1.0.tgz
+cd memcached-2.1.0/memcached-2.1.0
+phpize
+./configure
+make
+sudo make install
 ```
 Then add
 ```
@@ -159,24 +159,24 @@ See [creating a new project][create-new-project] for details.
 Clone the project:
 
 ```sh
-$ git clone git@github.com:frc/wordpress-on-heroku.git PROJECTNAME
-$ cd PROJECTNAME
+git clone git@github.com:frc/wordpress-on-heroku.git PROJECTNAME
+cd PROJECTNAME
 ```
 
 Remove the existing .git repository so you don't accidentally push back to the source:
 
 ```sh
-$ rm -rf .git
+rm -rf .git
 ```
 
 Initialize the Github repository which [you created earlier][github-repo]:
 
 ```sh
-$ git init
-$ git add -A
-$ git commit -m 'Initial commit'
-$ git remote add origin git@github.com:frc/PROJECTNAME.git
-$ git push -u origin master
+git init
+git add -A
+git commit -m 'Initial commit'
+git remote add origin git@github.com:frc/PROJECTNAME.git
+git push -u origin master
 ```
 
 ## <a name="local-setup"></a>INITIAL LOCAL SETUP
@@ -184,13 +184,13 @@ $ git push -u origin master
 ### Install WordPress to public/wordpress directory
 
 ```sh
-$ curl http://wordpress.org/latest.tar.gz | tar xz -C public
+curl http://wordpress.org/latest.tar.gz | tar xz -C public
 ```
 
 ### <a name="create-db"></a>Create a local MySQL database
 
 ```sh
-$ mysqladmin -uroot create DATABASENAME
+mysqladmin -uroot create DATABASENAME
 ```
 
 ### <a name="local-env"></a>Setting up the local environment
@@ -204,7 +204,7 @@ Define your environment variables in a file called `.env` (this will be ignored 
 In every terminal used to run the server, run:
 
 ```sh
-$ export `cat .env`
+export `cat .env`
 ```
 
 ## <a name="heroku-setup"></a>HEROKU SETUP
@@ -215,18 +215,18 @@ Make sure you [installed everything you need][install-heroku] before you proceed
 
 APPNAME should be the site name written together, lowercase and without "www". For example, www.example.com should be examplecom.
 ```sh
-$ heroku create --region eu APPNAME
+heroku create --region eu APPNAME
 ```
 
 Transfer the app's ownership from your *personal account* to *frc* on [Heroku](https://www.heroku.com/) or join the app by accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
 
 ```sh
-$ cd APPNAME
-$ heroku addons:add cleardb:ignite
-$ heroku addons:add sendgrid:starter
-$ heroku addons:add memcachier:dev
-$ heroku addons:add scheduler:standard
-$ heroku addons:add papertrail:choklad
+cd APPNAME
+heroku addons:add cleardb:ignite
+heroku addons:add sendgrid:starter
+heroku addons:add memcachier:dev
+heroku addons:add scheduler:standard
+heroku addons:add papertrail:choklad
 ```
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
@@ -242,7 +242,7 @@ so that it doesn't fill up. This is in [Heroku Dashboard](https://dashboard.hero
 ### <a name="create-staging-app"></a>Create a new heroku app (staging)
 
 ```sh
-$ heroku create --region eu --buildpack APPNAME-staging
+heroku create --region eu --buildpack APPNAME-staging
 ```
 
 Join the app on [Heroku](https://www.heroku.com/) by logging in and accessing the [frc apps](https://dashboard.heroku.com/orgs/frc/apps) directory.
@@ -279,8 +279,8 @@ Frantic has its own [WordPress theme][frantic-wp-theme] located in another repos
 If your site is already running on Heroku, you can set the remote and start pushing there:
 
 ```sh
-$ git remote set-url heroku git@heroku.com:APPNAME.git
-$ git push heroku master
+git remote set-url heroku git@heroku.com:APPNAME.git
+git push heroku master
 ```
 
 ### <a name="deploy-heroku"></a>Pushing to Heroku
@@ -288,15 +288,15 @@ $ git push heroku master
 Setting up the remote (you only need to do this once):
 
 ```sh
-$ heroku info
-$ git remote add heroku HEROKUGITURL
+heroku info
+git remote add heroku HEROKUGITURL
 ```
 
 Pushing:
 
 ```sh
-$ git push # always push to Github first
-$ git push heroku master
+git push # always push to Github first
+git push heroku master
 ```
 
 ### <a name="deploy-staging"></a>Pushing to staging environment
@@ -304,15 +304,15 @@ $ git push heroku master
 Setting up the remote (you only need to do this once):
 
 ```sh
-$ heroku info
-$ git remote add dev HEROKUSTAGINGGITURL
+heroku info
+git remote add dev HEROKUSTAGINGGITURL
 ```
 
 Pushing:
 
 ```sh
-$ git push # always push to Github first
-$ git push dev master
+git push # always push to Github first
+git push dev master
 ```
 
 ## <a name="local-wp"></a>ACCESSING WORDPRESS LOCALLY
@@ -320,7 +320,7 @@ $ git push dev master
 Start the local WordPress server (from the root directory):
 
 ```sh
-$ php -S localhost:5000 -t public
+php -S localhost:5000 -t public
 ```
 
 Check <http://localhost:5000/> and perform the basic installation for WordPress.
@@ -376,7 +376,7 @@ Location: `util/Search-Replace-DB/`
 Start the server from the root folder:
 
 ```sh
-$ php -S localhost:5999 -t util/Search-Replace-DB/
+php -S localhost:5999 -t util/Search-Replace-DB/
 ```
 
 Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry run` button to do a test run without searching/replacing.
@@ -398,8 +398,8 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	Then make the actual dump:
 
 	```sh
-	$ heroku config:get CLEARDB_DATABASE_URL
-	$ mysqldump -uroot DATABASENAME | mysql -uxxx -pxxx -hxxx heroku_xxx ## see config above
+	heroku config:get CLEARDB_DATABASE_URL
+	mysqldump -uroot DATABASENAME | mysql -uxxx -pxxx -hxxx heroku_xxx ## see config above
 	```
 
 2. Migrate database URLs
@@ -410,13 +410,13 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 	To get the `HEROKUAPPURL`, type:
 
 	```sh
-	$ heroku info
+	heroku info
 	```
 
 3. Flush the `memcached`
 
 	```sh
-	$ heroku addons:open memcachier
+	heroku addons:open memcachier
 	```
 
 ### <a name="import-heroku-db"></a>Import database from Heroku
@@ -424,8 +424,8 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 1. Dump CLEARDB to your local database
 
 	```sh
-	$ heroku config:get CLEARDB_DATABASE_URL
-	$ mysqldump -uxxx -pxxx -hxxx heroku_xxx | mysql -uroot DATABASENAME
+	heroku config:get CLEARDB_DATABASE_URL
+	mysqldump -uxxx -pxxx -hxxx heroku_xxx | mysql -uroot DATABASENAME
 	```
 
 2. Migrate database URLs
@@ -435,7 +435,7 @@ Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry 
 
 3. Flush the local `memcached`
 
-	See `$ brew info memcached` for details.
+	See `brew info memcached` for details.
 
 ### <a name="import-wordpress"></a>IMPORT FROM LEGACY WP INSTALLATION
 
@@ -446,14 +446,14 @@ Create a new project, [see above][create-new-project].
 You will need to get access to the old server in order to be able to access the database.
 
 ```sh
-$ mysqldump -uxxx -pyyy DATABASENAME >~/DATABASENAME.sql
+mysqldump -uxxx -pyyy DATABASENAME >~/DATABASENAME.sql
 ```
 
 #### Import to localhost (at the `localhost`)
 
 ```sh
-$ scp HOSTNAME:DATABASENAME.sql /tmp/
-$ mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
+scp HOSTNAME:DATABASENAME.sql /tmp/
+mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
 ```
 
 #### Alternative way
@@ -476,13 +476,13 @@ You can also use an Mac OS app like [Sequel](http://www.sequelpro.com/) to save 
 #### Transfer media assets to your local installation
 
 ```sh
-$ scp -r HOSTNAME:/PATHTOWPISNTALLATION/wp-content/uploads public/wp-content/
+scp -r HOSTNAME:/PATHTOWPISNTALLATION/wp-content/uploads public/wp-content/
 ```
 
 #### Start the local WordPress server (from the root directory)
 
 ```sh
-$ php -S localhost:5000 -t public
+php -S localhost:5000 -t public
 ```
 
 Check that everything is ok <http://localhost:5000/wp-admin/>
@@ -496,14 +496,14 @@ You will need to activate the [WPRO plugin](https://github.com/alfreddatakillen/
 3. Run MySQL command:
 
 	```sh
-	$ mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
+	mysql -uroot DATABASENAME -e 'select * from wp_options where option_name like "wpro-aws%"'
 	```
 
 4. Replace `localhost:5000/wp-content/uploads` with `BUCKETNAME/BUCKETPATH/staging`
 5. Remove uploads from local storage and verify that all images, attachments etc. work correctly.
 
 	```sh
-	$ rm -rf public/wp-content/uploads
+	rm -rf public/wp-content/uploads
 	```
 
 [getting-started]:#getting-started
