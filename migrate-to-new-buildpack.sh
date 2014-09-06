@@ -35,4 +35,7 @@ echo "3) Update README.md of your project"
 echo "4) Run:"
 echo "     heroku config:unset BUILDPACK_URL"
 echo "     heroku config:unset BUILDPACK_WORDPRESS_DIR"
+echo "     composer update"
+echo "     git add composer.lock"
 echo
+echo " If composer fails to install deps, see https://github.com/frc/wordpress-on-heroku#prerequisites"
