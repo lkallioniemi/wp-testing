@@ -98,8 +98,8 @@ Or, if you don't want/need `launchctl`, you can just run:
 ### Compiling memcached for php
 ```sh
 pecl download memcached
-open memcached-2.1.0.tgz
-cd memcached-2.1.0/memcached-2.1.0
+open memcached-2.2.0.tgz
+cd memcached-2.2.0/memcached-2.2.0
 phpize
 ./configure
 make
