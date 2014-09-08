@@ -1,35 +1,21 @@
-### General ###
+## General
+.*
+!.gitignore
+
+## Temporary files
 *~
 *.log
-*.env
 
-# Heroku
-/vendor/
-
-### CodeKit ###
-codekit-config.json
-
-# Grunt
-node_modules
-
-### OS generated files ###
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-Icon?
-ehthumbs.db
-Thumbs.db
-
-### Sass ###
-.sass-cache
-
-### SublimeText ###
+## Local configuration
 *.sublime-project
 *.sublime-workspace
+codekit-config.json
 
-### WordPress ###
+## Local dependencies
+node_modules
+/vendor/
+
+## WordPress
 /public/wordpress/
 /public/wp-content/uploads/
 /public/wp-content/cache/
@@ -40,6 +26,6 @@ Thumbs.db
 sitemap.xml
 sitemap.xml.gz
 
-### Query Monitor Plugin (only for local dev) ###
+## Query Monitor Plugin (only for local dev)
 /public/wp-content/db.php
 /public/wp-content/plugins/query-monitor/
