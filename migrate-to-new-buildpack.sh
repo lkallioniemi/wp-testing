@@ -14,6 +14,7 @@ cp composer.json $1
 mkdir -p $1/config/public
 cp public/.user.ini $1/config/public/.user.ini
 cp nginx.conf $1
+
 cd $1
 mkdir util
 git mv config/public public
@@ -26,6 +27,16 @@ git add composer.json
 git add public/.user.ini
 git add nginx.conf
 
+heroku config:unset NGINX_VERSION
+heroku config:unset PHP_VERSION
+heroku config:unset WORDPRESS_VERSION
+heroku config:unset WORDPRESS_DIR
+
+heroku config:unset BUILDPACK_NGINX_VERSION
+heroku config:unset BUILDPACK_PHP_VERSION
+heroku config:unset BUILDPACK_WORDPRESS_VERSION
+heroku config:unset BUILDPACK_WORDPRESS_DIR
+
 echo
 echo Automatic part of the migration done.
 echo
@@ -33,8 +44,6 @@ echo "1) Migrate nginx.conf contents into /nginx.conf"
 echo "2) Check the comparison of the commit before committing"
 echo "3) Update README.md of your project"
 echo "4) Run:"
-echo "     heroku config:unset BUILDPACK_URL"
-echo "     heroku config:unset BUILDPACK_WORDPRESS_DIR"
 echo "     composer update"
 echo "     git add composer.lock"
 echo
