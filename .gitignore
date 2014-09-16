@@ -1,5 +1,6 @@
 ## General
 .*
+!.user.ini
 !.gitignore
 
 ## Temporary files
