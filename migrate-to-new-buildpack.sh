@@ -27,16 +27,6 @@ git add composer.json
 git add public/.user.ini
 git add nginx.conf
 
-heroku config:unset NGINX_VERSION
-heroku config:unset PHP_VERSION
-heroku config:unset WORDPRESS_VERSION
-heroku config:unset WORDPRESS_DIR
-
-heroku config:unset BUILDPACK_NGINX_VERSION
-heroku config:unset BUILDPACK_PHP_VERSION
-heroku config:unset BUILDPACK_WORDPRESS_VERSION
-heroku config:unset BUILDPACK_WORDPRESS_DIR
-
 echo
 echo Automatic part of the migration done.
 echo
@@ -44,6 +34,16 @@ echo "1) Migrate nginx.conf contents into /nginx.conf"
 echo "2) Check the comparison of the commit before committing"
 echo "3) Update README.md of your project"
 echo "4) Run:"
+echo "     heroku config:unset NGINX_VERSION"
+echo "     heroku config:unset PHP_VERSION"
+echo "     heroku config:unset WORDPRESS_VERSION"
+echo "     heroku config:unset WORDPRESS_DIR"
+
+echo "     heroku config:unset BUILDPACK_NGINX_VERSION"
+echo "     heroku config:unset BUILDPACK_PHP_VERSION"
+echo "     heroku config:unset BUILDPACK_WORDPRESS_VERSION"
+echo "     heroku config:unset BUILDPACK_WORDPRESS_DIR"
+echo ""
 echo "     composer update"
 echo "     git add composer.lock"
 echo
