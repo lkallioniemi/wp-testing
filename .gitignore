@@ -2,6 +2,8 @@
 .*
 !.user.ini
 !.gitignore
+!.csslintrc
+!.jshintrc
 
 ## Temporary files
 *~
