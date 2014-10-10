@@ -19,6 +19,7 @@ cd $1
 mkdir util
 git mv config/public public
 git mv config/vendor/php/Search-Replace-DB util
+git mv config/vendor/nginx/conf/wordpress.conf.erb wordpress.conf.erb.old
 git rm -r config
 git add .gitignore
 git add Procfile
@@ -30,10 +31,11 @@ git add nginx.conf
 echo
 echo Automatic part of the migration done.
 echo
-echo "1) Migrate nginx.conf contents into /nginx.conf"
-echo "2) Check the comparison of the commit before committing"
-echo "3) Update README.md of your project"
-echo "4) Run:"
+echo "1) Migrate wordpress.conf.erb.old contents into /nginx.conf"
+echo "2) Remove wordpress.conf.erb.old"
+echo "3) Check the comparison of the commit before committing"
+echo "4) Update README.md of your project"
+echo "5) Run:"
 echo "     heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-php"
 echo "     heroku config:unset NGINX_VERSION"
 echo "     heroku config:unset PHP_VERSION"
