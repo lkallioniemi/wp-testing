@@ -17,7 +17,7 @@ NORMAL DEVELOPMENT CYCLE
     cd REPOSITORY_NAME
     git remote add heroku git@heroku.com:HEROKU_APP_NAME.git
     mysqladmin -uroot create DATABASENAME
-    curl http://wordpress.org/latest.tar.gz | tar xz -C config/public
+    curl https://wordpress.org/latest.tar.gz | tar xz -C public
 
 #### Define your environment variables
 
