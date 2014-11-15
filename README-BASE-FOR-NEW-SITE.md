@@ -1,15 +1,9 @@
-The public website for XXXXX
-===================================================
-
 NORMAL DEVELOPMENT CYCLE
 ------------------------
 
     1. Clone the repository for local development.
-
     2. Import database from heroku to localhost.
-
     3. Develop on localhost, commit, and push to heroku for staging.
-
 
 ### INITIAL SETUP
 
@@ -17,7 +11,7 @@ NORMAL DEVELOPMENT CYCLE
     cd REPOSITORY_NAME
     git remote add heroku git@heroku.com:HEROKU_APP_NAME.git
     mysqladmin -uroot create DATABASENAME
-    curl https://wordpress.org/latest.tar.gz | tar xz -C public
+    composer install
 
 #### Define your environment variables
 
@@ -32,9 +26,6 @@ NORMAL DEVELOPMENT CYCLE
 
         export `cat .env`
 
-    You can also use start.sh if you want to make it easier on yourself. Check with other developers for details.
-
-
 ### POPULATING THE LOCAL DATABASE
 
     Dump CLEARDB to your local database
@@ -43,23 +34,18 @@ NORMAL DEVELOPMENT CYCLE
         mysql -uroot DATABASENAME </tmp/DATABASENAME.sql
 
     Migrate database URLs
-        php -S localhost:5999 -t .
-        open http://localhost:5999/searchreplacedb2.php
+        php -S localhost:5999 -t util/Search-Replace-DB
+        open http://localhost:5999/
         ## specify LOCAL database connection info
         ## replace HEROKUAPPURL with localhost:5000
 
     Flush the memcached
+        killall memcached
         ## see "brew info memcached" for details
-
 
 ### STARTING THE LOCAL DEV ENVIRONMENT
 
     php -S localhost:5000 -t public
-
-    or
-
-    ./start.sh
-
 
 ### DEPLOY CHANGES TO GITHUB
 
@@ -71,4 +57,3 @@ NORMAL DEVELOPMENT CYCLE
 ### DEPLOY CHANGES LIVE
 
     git push heroku master
-
