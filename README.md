@@ -168,7 +168,7 @@ git push -u origin master
 ### Install WordPress to public/wordpress directory
 
 ```sh
-curl http://wordpress.org/latest.tar.gz | tar xz -C public
+curl https://wordpress.org/latest.tar.gz | tar xz -C public
 ```
 
 ### <a name="create-db"></a>Create a local MySQL database
