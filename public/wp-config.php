@@ -37,6 +37,14 @@ define( 'WP_CONTENT_URL', "$hosturl/wp-content" );
 $docroot = ( $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : '/app/public/' );
 define( 'WP_CONTENT_DIR', "$docroot/wp-content" );
 
+/**
+ * If wordpress-unsecure-auth-cookie plug-in is enabled, we'll set COOKIEHASH without http:// or https:// in the beginning.
+ */
+ define('FORCE_UNSECURE_AUTH_COOKIE', getenv('FORCE_UNSECURE_AUTH_COOKIE') == 'true');
+if (defined('FORCE_UNSECURE_AUTH_COOKIE')) {
+    define('COOKIEHASH', md5( $_SERVER["HTTP_HOST"] ) );
+}
+
 /**#@+
  * Authentication Unique Keys and Salts.
  *
