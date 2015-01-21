@@ -2,24 +2,16 @@
 /**
 Plugin Name: Wordpress Unsecure Auth Cookie
 Plugin URI: https://github.com/jussikinnula/wordpress-unsecure-auth-cookie
-Description: Plug-in to disable Wordpress secure auth cookie, if the same auth cookie is wanted to be valid for both HTTP and HTTPS side of a website.
-Version: 0.1
+Description: Plug-in to force cookies to be created without secure bit on them, for use of using same sessions in HTTP and HTTPS site.
+Version: 0.3
 Author: Jussi Kinnula / Frantic
 Author URI: http://www.frantic.com
 License: GPLv2
  */
 
 /**
- * Setting option(s)
- */
-
-if ( !get_site_option('wordpress_unsecure_auth_cookie_installed') ) {
-	add_site_option('wordpress_unsecure_auth_cookie_installed', true);
-}
-
-/**
  * The wp_set_auth_cookie is directly copied from WordPress' pluggable.php -file,
- * and modified 
+ * and modified to not to set secure bit, if environment variable is set.
  */
 
 if ( !function_exists('wp_set_auth_cookie') ) :
@@ -89,14 +81,7 @@ function wp_set_auth_cookie($user_id, $remember = false, $secure = '') {
 	 */
 	$secure_logged_in_cookie = apply_filters( 'secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, $secure );
 
-	/**
-	 * If $unsecure_cookie_domain was set correctly, secure auth cookie is never used.
-	 */
-	if ( get_site_option('wordpress_unsecure_auth_cookie_installed') ) {
-		$auth_cookie_name = AUTH_COOKIE;
-		$scheme = 'auth';
-		$secure_logged_in_cookie = false;
-	} else if ( $secure ) {
+	if ( $secure ) {
 		$auth_cookie_name = SECURE_AUTH_COOKIE;
 		$scheme = 'secure_auth';
 	} else {
@@ -140,12 +125,10 @@ function wp_set_auth_cookie($user_id, $remember = false, $secure = '') {
 
 	//debug_logger("auth_cookie=".$auth_cookie." logged_in_cookie=".$logged_in_cookie." secure_logged_in_cookie=".$secure_logged_in_cookie." COOKIE_DOMAIN=".COOKIE_DOMAIN);
 
-	setcookie($auth_cookie_name, $auth_cookie, $expire, PLUGINS_COOKIE_PATH, COOKIE_DOMAIN, $secure, true);
-	setcookie($auth_cookie_name, $auth_cookie, $expire, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, $secure, true);
-	setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true);
+	setcookie($auth_cookie_name, $auth_cookie, $expire, PLUGINS_COOKIE_PATH, COOKIE_DOMAIN, false, true);
+	setcookie($auth_cookie_name, $auth_cookie, $expire, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, false, true);
+	setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, COOKIEPATH, COOKIE_DOMAIN, false, true);
 	if ( COOKIEPATH != SITECOOKIEPATH )
-		setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true);
+		setcookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
 }
 endif;
-
-?>
