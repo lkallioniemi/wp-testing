@@ -98,7 +98,7 @@ Or, if you don't want/need `launchctl`, you can just run:
 
 #### MySQL
 
-	Todo ...
+Install MySQL with the brew command and run the server with mysql.server start
 
 ### <a name="install-heroku"></a>Heroku Toolbelt
 
@@ -282,6 +282,12 @@ Pushing:
 ```sh
 git push # always push to Github first
 git push heroku master
+```
+
+if it is the first time you are deploying to Heroku, make sure the composer.lock file is included. In order to generate this file run the following command and include it in the repository:
+
+```sh
+composer install
 ```
 
 ### <a name="deploy-staging"></a>Pushing to staging environment
