@@ -362,7 +362,7 @@ Source: <https://github.com/interconnectit/Search-Replace-DB/>
 
 Location: `util/Search-Replace-DB/`
 
-#### Usage
+#### Website based usage
 
 Start the server from the root folder:
 
@@ -373,6 +373,26 @@ php -S localhost:5999 -t util/Search-Replace-DB/
 Open <http://localhost:5999/> and fill in the fields as needed. Choose the `Dry run` button to do a test run without searching/replacing.
 
 **Note**: Whenever we reference `http://localhost:5999/` you will need have this running in the background.
+
+#### Command line usage
+
+Alternatively, if you fancy the command line, you can perform the search and replace with the command line script.
+
+Change the directory to util/Search-Replace-DB/ and run the following command:
+
+```sh
+php srdb.cli.php -h <HOST> -u <MYSQL_USER> -p <MYSQL_PASSWORD> -n <DATABASE_NAME> -s "<OLD STRING>" -r "<NEW STRING>"
+```
+
+**Note**: unlike with Website based, there is no confirmation dialog so the search and replace is immediately done . It is recommended to include the -z flag (dry-run) to the command just to make sure it will work as intended.
+
+Example of an actual usage with the dry-run option:
+
+```sh
+php srdb.cli.php -h localhost -u root -p '' -n mylocalsitedb -s "something.herokuapp.com" -r "localhost:4500" -z
+```
+
+(if everything looks legit then you can drop the -z from the previous command)
 
 ### <a name="export-local-db"></a>Export local database to Heroku
 
