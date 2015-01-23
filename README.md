@@ -61,7 +61,7 @@ The repository comes bundled with the following WordPress plugins:
 * Batcache : <http://wordpress.org/plugins/batcache/>             									    # Page caching (uses MemCachier)
 * MemCachier : <http://wordpress.org/extend/plugins/memcached/>   									    # WordPress object cache
 * WP Read-Only : <http://wordpress.org/plugins/wpro/>           									  	# Stores files on Amazon S3
-* Wordpress Unsecure Auth Cookie : <hhttps://github.com/jussikinnula/wordpress-unsecure-auth-cookie>  	# Enables use of same auth cookie on both HTTP and HTTPS
+* Wordpress Unsecure Auth Cookie : <https://github.com/jussikinnula/wordpress-unsecure-auth-cookie>  	# Enables use of same auth cookie on both HTTP and HTTPS
 
 ## <a name="prerequisites"></a>PREREQUISITES
 
