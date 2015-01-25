@@ -216,6 +216,11 @@ heroku addons:add papertrail:choklad
 
 **Note**: If you run into performance issues or you're setting up a site that requires more processing power, you can upgrade  cleardb from `ignite` to  `drift` so long as you remember that this will start costing **$50 / month**.
 
+Configure the buildpack URL:
+```sh
+heroku config:add BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-php
+```
+
 ### Ignore useless log entries
 
 Set Papertrail to ignore
