@@ -1,5 +1,6 @@
 ## General
 .*
+!.profile.d
 !.user.ini
 !.gitignore
 !.csslintrc
