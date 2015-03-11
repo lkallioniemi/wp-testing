@@ -128,12 +128,6 @@ class WPRO_Backend_S3 {
 
 		$file = $data['file'];
 		$url = wpro()->url->relativePath($data['url']);
-		$url = $this->url_encode_filename($url);
-
-		if (strlen($folder = trim(wpro()->options->get_option('wpro-folder'), '/'))) {
-			$url = $folder . "/" . $url;
-		}
-
 		$mime = $data['type'];
 
 		if (!file_exists($file)) {
@@ -153,7 +147,7 @@ class WPRO_Backend_S3 {
 			return $log->logreturn(false);
 		}
 		$datetime = gmdate('r');
-		$string2sign = $this->string_to_sign_at_upload($mime, $datetime, "/" . wpro()->options->get('wpro-aws-bucket') . "/" . $url);
+		$string2sign = $this->string_to_sign_at_upload($mime, $datetime, $url);
 
 		$host = wpro()->options->get('wpro-aws-bucket');
 		if (!wpro()->options->get_option('wpro-aws-virthost')) {
@@ -199,9 +193,6 @@ class WPRO_Backend_S3 {
 	function string_to_sign_at_upload($mime, $datetime, $url) {
 		$log = wpro()->debug->logblock('WPRO_Backend_S3::string_to_sign_at_upload($mime = "' . $mime . '", $datetime = "' . $datetime . '", $url = "' . $url . '")');
 		$url = wpro()->url->relativePath($url);
-		if (strlen($folder = trim(wpro()->options->get_option('wpro-folder'), '/'))) {
-			$url = $folder . "/" . $url;
-		}
 		$string = "PUT\n\n" . $mime . "\n" . $datetime . "\nx-amz-acl:public-read\n/" . wpro()->options->get('wpro-aws-bucket') . '/' . $url;
 		return $log->logreturn($string);
 	}
