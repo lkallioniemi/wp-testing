@@ -117,7 +117,12 @@ define('DISALLOW_FILE_EDIT', true);
  */
 define('FS_METHOD', 'direct');
 
-/* That"s all, stop editing! Happy blogging. */
+/**
+ * Specify the Number of Post Revisions
+ */
+define("WP_POST_REVISIONS", 10);
+
+/* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
 if ( !defined("ABSPATH") )
