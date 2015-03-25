@@ -5,11 +5,13 @@ Plugin URI: http://wordpress.org/extend/plugins/batcache/
 Description: This optional plugin improves Batcache. Modified by Frantic to support SSL admin.
 Author: Andy Skelton
 Author URI: http://andyskelton.com/
-Version: 1.2.1
+Version: 1.2
 */
 
+global $batcache;
+
 // Do not load if our advanced-cache.php isn't loaded
-if ( ! is_object($batcache) || ! method_exists( $wp_object_cache, 'incr' ) )
+if ( ! isset( $batcache ) || ! is_object($batcache) || ! method_exists( $wp_object_cache, 'incr' ) )
 	return;
 
 $batcache->configure_groups();
@@ -26,7 +28,7 @@ function batcache_post($post_id) {
 	global $batcache;
 
 	$post = get_post($post_id);
-	if ( $post->post_type == 'revision' || get_post_status($post_id) != 'publish' )
+	if ( empty( $post ) || $post->post_type == 'revision' || get_post_status($post_id) != 'publish' )
 		return;
 
 	$home_url = get_option('home');
