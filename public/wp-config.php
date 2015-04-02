@@ -42,7 +42,7 @@ define( 'WP_CONTENT_DIR', "$docroot/wp-content" );
  */
  define('FORCE_UNSECURE_AUTH_COOKIE', getenv('FORCE_UNSECURE_AUTH_COOKIE') == 'true');
 if (defined('FORCE_UNSECURE_AUTH_COOKIE')) {
-    define('COOKIEHASH', md5( $_SERVER["HTTP_HOST"] ) );
+    define('COOKIEHASH', md5( strtolower($_SERVER["HTTP_HOST"]) ) );
 }
 
 /**#@+
