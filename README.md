@@ -168,6 +168,14 @@ git push -u origin master
 
 ### Install WordPress to public/wordpress directory
 
+You can either install it through composer:
+
+```sh
+composer install
+```
+
+or you can install it manually from the WP site:
+
 ```sh
 curl https://wordpress.org/latest.tar.gz | tar xz -C public
 ```
