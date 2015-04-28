@@ -407,6 +407,10 @@ php srdb.cli.php -h localhost -u root -p '' -n mylocalsitedb -s "something.herok
 
 (if everything looks legit then you can drop the -z from the previous command)
 
+#### Cleardb script
+
+See <https://github.com/josepfrantic/heroku-cleardbdump>
+
 ### <a name="export-local-db"></a>Export local database to Heroku
 
 1. Dump local database to CLEARDB
@@ -436,6 +440,8 @@ php srdb.cli.php -h localhost -u root -p '' -n mylocalsitedb -s "something.herok
 	```sh
 	heroku info
 	```
+	
+	Alternatively, see <https://github.com/josepfrantic/heroku-cleardbdump>
 
 3. Flush the `memcached`
 
@@ -456,6 +462,8 @@ php srdb.cli.php -h localhost -u root -p '' -n mylocalsitedb -s "something.herok
 	* Start [Search Replace DB](#search-replace-db) and open <http://localhost:5999/>
 	* Specify **LOCAL** database connection info
 	* Replace `HEROKUAPPURL` with `localhost:5000`
+
+	Alternatively, see <https://github.com/josepfrantic/heroku-cleardbdump>
 
 3. Flush the local `memcached`
 
