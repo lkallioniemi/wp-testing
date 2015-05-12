@@ -3,7 +3,14 @@
         "ext-memcached": "*",
         "ext-mbstring": "*",
         "ext-gd": "*",
-        "johnpbloch/wordpress": "*"
+        "johnpbloch/wordpress": "*",
+        "phpunit/phpunit": "~4.6",
+        "phpunit/php-code-coverage": "~2.0",
+        "phpunit/php-file-iterator": "~1.4",
+        "phpunit/php-timer": "~1.0",
+        "phpunit/php-text-template": "~1.2",
+        "phpunit/php-token-stream": "~1.4",
+        "phpunit/phpunit-mock-objects": "~2.3"
     },
     "extra": {
         "wordpress-install-dir": "public/wordpress"
