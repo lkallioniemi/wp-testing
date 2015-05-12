@@ -19,7 +19,6 @@ codekit-config.json
 ## Local dependencies
 node_modules
 /vendor/
-/tests/vendor/
 
 ## WordPress
 /public/wordpress/
@@ -35,3 +34,4 @@ sitemap.xml.gz
 ## Query Monitor Plugin (only for local dev)
 /public/wp-content/db.php
 /public/wp-content/plugins/query-monitor/
+
