@@ -1,85 +1,53 @@
-# If you fork Jigoshop and want to use Travis on your fork, please go to:
-# https://github.com/yourname/jigoshop/admin/hooks#travis_minibucket
-# and follow the instructions
+# Travis CI Configuration File
+
+# Use Travis CI's faster Docker-based infrastructure.
+sudo: false
+
+# Tell Travis CI we're using PHP
 language: php
+
+# PHP version used in first build configuration.
 php:
-# PHP Versions Jigoshop Officially Supports
-  - 5.3
-  - 5.4
-# Ones that support for legacy reasons
-  - 5.2
+    - "5.5"
+
+# WordPress version used in first build configuration.
 env:
-# Officialy Supported WP Versions (w/ and w/o MS)
-  - WP_VERSION="3.4.2" WP_MULTISITE=0
-  - WP_VERSION="3.4.2" WP_MULTISITE=1
-# These versions are Beta versions (tested against but not supported by Jigoshop)
-  - WP_VERSION=3.5-beta3 WP_MULTISITE=0 
-  - WP_VERSION=3.5-beta3 WP_MULTISITE=1
-#  - WP_VERSION=3.5-beta2 WP_MULTISITE=0 
-#  - WP_VERSION=3.5-beta2 WP_MULTISITE=1
-#  - WP_VERSION=3.5-beta-1 WP_MULTISITE=0
-#  - WP_VERSION=3.5-beta-1 WP_MULTISITE=1
-# These versions of WordPress we do not officially support
-# To test Jigoshop on them, uncomment the line, by removing the "#"
-#    and then uncomment the allowed failures line for the respective
-#    versions below. 
-#  - WP_VERSION=3.4.1 WP_MULTISITE=0
-#  - WP_VERSION=3.4.1 WP_MULTISITE=1
-#  - WP_VERSION=3.4 WP_MULTISITE=0
-#  - WP_VERSION=3.4 WP_MULTISITE=1 
-#  - WP_VERSION=3.3.3 WP_MULTISITE=0
-#  - WP_VERSION=3.3.3 WP_MULTISITE=1 
-#  - WP_VERSION=3.3.2 WP_MULTISITE=0
-#  - WP_VERSION=3.3.2 WP_MULTISITE=1
-#  - WP_VERSION=3.3.1 WP_MULTISITE=0
-#  - WP_VERSION=3.3 WP_MULTISITE=1
-#  - WP_VERSION=3.3 WP_MULTISITE=0
-#  - WP_VERSION=3.2.1 WP_MULTISITE=1
-#  - WP_VERSION=3.2.1 WP_MULTISITE=0
-#  - WP_VERSION=3.2 WP_MULTISITE=0
-#  - WP_VERSION=3.2 WP_MULTISITE=1
-# Test against (but allow fail) on older WP and PHP versions, as well as beta WP
-# Also test against the current Master (development) Github repo of WordPress
+    - WP_VERSION=master
+
+# Next we define our matrix of additional build configurations to test against.
+# The versions listed above will automatically create our first configuration,
+# so it doesn't need to be re-defined below.
+
+# WP_VERSION specifies the tag to use. The way these tests are configured to run
+# requires at least WordPress 3.8. Specify "master" to test against SVN trunk.
+
+# Note that Travis CI supports listing these above to automatically build a
+# matrix of configurations, but we're being nice here by manually building a
+# total of four configurations even though we're testing 4 versions of PHP
+# along with 2 versions of WordPress (which would build 8 configs otherwise).
+# This takes half as long to run while still providing adequate coverage.
+
 matrix:
-  allow_failures:
-# Beta Versions
-    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=0 
-    - env: WP_VERSION=3.5-beta3 WP_MULTISITE=1
-#    - env: WP_VERSION=3.5-beta2 WP_MULTISITE=0 
-#    - env: WP_VERSION=3.5-beta2 WP_MULTISITE=1
-#    - env: WP_VERSION=3.5-beta-1 WP_MULTISITE=0 
-#    - env: WP_VERSION=3.5-beta-1 WP_MULTISITE=1 
-# Old Versions (uncomment lines here and above to test)
-#  - WP_VERSION=3.4.1 WP_MULTISITE=0
-#  - WP_VERSION=3.4.1 WP_MULTISITE=1
-#  - WP_VERSION=3.4 WP_MULTISITE=0
-#  - WP_VERSION=3.4 WP_MULTISITE=1 
-#    - env: WP_VERSION=3.3.3 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.3 WP_MULTISITE=1 
-#    - env: WP_VERSION=3.3.2 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.2 WP_MULTISITE=1
-#    - env: WP_VERSION=3.3.1 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3.1 WP_MULTISITE=1
-#    - env: WP_VERSION=3.3 WP_MULTISITE=0
-#    - env: WP_VERSION=3.3 WP_MULTISITE=1
-#    - env: WP_VERSION=3.2.1 WP_MULTISITE=0
-#    - env: WP_VERSION=3.2.1 WP_MULTISITE=1
-#    - env: WP_VERSION=3.2 WP_MULTISITE=0
-#    - env: WP_VERSION=3.2 WP_MULTISITE=1
-    - php: 5.2
-install: 
-#   - composer update
-   - composer require johnpbloch/wordpress:3.4.2
-   - composer require phpunit/phpunit:4.6
-branches:
-  exclude:
-    - master
+  include:
+    - php: "5.3"
+      env: WP_VERSION=master
+    - php: "5.4"
+      env: WP_VERSION=3.8.1
+    - php: "5.2"
+      env: WP_VERSION=3.8.1
+
+# Clones WordPress and configures our testing environment.
 before_script:
-#  - cp tests/unittests-config.travis.php vendor/wordpress-tests/unittests-config.php
-#  - wget -O wordpress.tar.gz http://wordpress.org/wordpress-$WP_VERSION.tar.gz
-#  - tar -xzf wordpress.tar.gz -C public
-  - mysql -e "create database IF NOT EXISTS test;" -uroot
-    
-script: phpunit --coverage-text tests/all.php
-notifications:
-  email: false
+    - export PLUGIN_SLUG=$(basename $(pwd))
+    - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ /tmp/wordpress
+    - cd ..
+    - mv "$PLUGIN_SLUG" "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - cd /tmp/wordpress
+    - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
+    - cp wp-tests-config-sample.php wp-tests-config.php
+    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
+    - sed -i "s/yourusernamehere/travis/" wp-tests-config.php
+    - sed -i "s/yourpasswordhere//" wp-tests-config.php
+    - cd "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+
+script: phpunit
